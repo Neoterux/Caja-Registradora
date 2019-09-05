@@ -50,4 +50,17 @@
     nbproject/build-impl.xml and nbproject/jfx-impl.xml.
 
     -->
+	
+    <target name="-post-jfx-jar">
+        <jar jarfile="${dist.jar}" update="true">
+            <zipfileset src="${dist.jar}" includes="**/*.class" />
+            <zipfileset src="${file.reference.core}" includes="**/*.class" excludes="META-INF/*"/>
+            <zipfileset src="${file.reference.gson}" includes="**/*.class" excludes="META-INF/*"/>
+            <zipfileset src="${file.reference.javase}" includes="**/*.class" excludes="META-INF/*"/>
+            <zipfileset src="${file.reference.mysql-connector}" includes="**/*.class" excludes="META-INF/*"/>
+            <!--manifest>
+                <attribute name="Main-Class" value="Proyecto/Main"/>
+            </manifest-->
+        </jar>
+    </target>
 </project>
