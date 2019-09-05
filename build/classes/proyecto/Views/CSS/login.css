@@ -1,0 +1,9 @@
+.button{
+    -fx-padding: 5 10 5 10;
+}
+.dialog-pane{
+    -fx-border-width:8px;
+    -fx-border-radius:9px;
+    -fx-border-color: #616161;
+    -fx-background-radius: 9px;
+}

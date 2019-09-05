@@ -1,0 +1,110 @@
+.root {
+    -fx-base: #616161;
+    -fx-accent: #373737 ;
+    -fx-default-button: #7f878f ;
+    -fx-focus-color: red;
+    -fx-faint-focus-color: #efefef22;
+    -fx-focused-text-base-color : ladder(
+            -fx-selection-bar,
+            -fx-light-text-color 45%,
+            -fx-dark-text-color 46%,
+            -fx-dark-text-color 59%,
+            -fx-mid-text-color 60%
+        );
+    -fx-focused-mark-color : -fx-focused-text-base-color ; 
+    
+    -fx-font-size: 12px;
+    -fx-font-family: "Arial";
+    -fx-font-weight: BOLD;
+
+}
+
+.label{
+   -fx-text-fill: white; 
+}
+.text-field{
+    
+}
+.tab-pane .tab:selected .tab-label{
+    -fx-alignment: CENTER;
+    -text-base-color: #96b946; 
+    -fx-text-fill: #96b946!important;
+    -fx-font-weight: BOLD;
+}
+.check-box .box{
+    -fx-background-color: transparent;
+    -fx-border-width: 2px;
+    -fx-border-color: #616161;
+    -fx-border-radius:2px;
+    
+    
+    
+}
+
+.check-box:selected .mark{
+    -fx-background-color: white;
+    -fx-shape: "M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z";
+    -fx-line-height: 2px;
+}
+.check-box:hover{
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 15,0,0,0);
+}
+.check-box:selected .box{
+    -fx-border-color: red;
+    -fx-background-color:red;
+}
+
+
+/*Dark theme for tableview
+.table-view{
+    -fx-background-color: #7D7D7D;
+   -fx-table-cell-border-color: transparent;
+}
+.table-view .table-row-cell{
+    -fx-border-width: 1;
+}
+
+table-view .table-row-cell .text {
+    -fx-background-color: white;
+    -fx-text-fill: white;
+}
+.table-view .column-header{
+    -fx-background-color: #575757;
+}
+.table-view .column-header .label{
+    -fx-text-fill: white;
+    -fx-alignment: CENTER;
+}
+table-view .table-row-cell .table-cell:filled{
+    -fx-text-fill: white;
+    -fx-background-color: #7D7D7D;
+}
+table-view .table-row-cell:empty .table-cell {
+    -fx-border-width: 0px;
+    
+}
+table-view .column-header-background {
+    visibility: hidden;
+    -fx-padding: -1em;
+}
+/Dark theme for titled pane/
+.titled-pane{
+    -fx-text-fill: white!important;
+}
+
+
+
+/Dark theme for textfield/
+.text-field{
+    -fx-background-color: #BABABA;
+    -fx-text-fill: white!important;
+    -fx-prompt-text-fill: white;
+    
+}
+.text-field:selected {
+    
+}
+
+/Dark theme for button/
+
+Dark theme for checkbox*/

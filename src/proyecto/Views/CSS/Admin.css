@@ -1,0 +1,39 @@
+.button{
+    -fx-max-height: 27px;
+    
+    -fx-padding: 3 10 3 10;
+}
+
+#close{
+    -fx-border-radius: 1;
+    -fx-border-width: 1px;
+    -fx-border-color:transparent;
+    -fx-background-color:transparent;
+    
+    -fx-font: 19 Calibri;
+    -fx-font-weight: REGULAR;
+    
+}
+#close:hover{
+    -fx-background-color:red;
+    -fx-text-fill:white!important;
+}
+
+.button-bar .button{
+    -fx-max-width:50px;
+}
+
+.text-field{
+    -fx-max-height: 30px;
+    -fx-background-radius: 1000px;
+}
+
+.table-cell{
+    -fx-font: 14 Arial;
+}
+
+.combo-box{
+    -fx-max-height:27px;
+    -fx-min-width: 115px;
+    -fx-max-width: 120px;
+}

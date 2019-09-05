@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane maxHeight="30.0" minHeight="30.0">
+         <left>
+            <Button id="return" fx:id="btnReturn" mnemonicParsing="false" text="Volver" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <Button id="close" fx:id="btnClose" maxWidth="60.0" minWidth="60.0" mnemonicParsing="false" onAction="#OnClose" text="X" translateX="2.0" translateY="-2.0" BorderPane.alignment="CENTER" />
+         </right>
+      </BorderPane>
+      <TitledPane animated="false" collapsible="false" text="Cliente">
+        <content>
+          <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="130.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="28.0" layoutY="21.0" text="CEDULA" />
+                  <Label layoutX="21.0" layoutY="66.0" text="NOMBRES" />
+                  <Label layoutX="591.0" layoutY="66.0" text="EMAIL" />
+                  <Label layoutX="243.0" layoutY="21.0" text="DIRECCION" />
+                  <Label layoutX="387.0" layoutY="66.0" text="TELEFONO" />
+                  <TextField id="txtCedula" fx:id="txtCedula" layoutX="99.0" layoutY="16.0" maxWidth="-Infinity" minWidth="-Infinity" onKeyPressed="#tabRealeased" prefWidth="125.0" promptText="CEDULA">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <TextField id="txtNames" fx:id="txtNombre" editable="false" focusTraversable="false" layoutX="99.0" layoutY="61.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="275.0" promptText="NOMBRES">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <TextField id="txtDireccion" fx:id="txtDireccion" editable="false" focusTraversable="false" layoutX="323.0" layoutY="16.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="645.0" promptText="DIRECCION">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <TextField id="txtTelefono" fx:id="txtTelefono" editable="false" focusTraversable="false" layoutX="460.0" layoutY="61.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="125.0" promptText="TELEFONO">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <TextField id="txtEmail" fx:id="txtEmail" editable="false" focusTraversable="false" layoutX="643.0" layoutY="61.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="325.0" promptText="EMAIL">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+               </children>
+            </AnchorPane>
+        </content>
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" focusTraversable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="150.0" text="Producto">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" style="-fx-border-insets: 10;">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="CODIGO PRODUCTO" />
+                  <Label layoutX="86.0" layoutY="52.0" text="NOMBRE" />
+                  <Label layoutX="97.0" layoutY="87.0" text="PRECIO" />
+                  <TextField id="txtProdID" fx:id="txtCodigo" layoutX="153.0" layoutY="9.0" maxWidth="-Infinity" minWidth="-Infinity" onKeyPressed="#tabRealeased" prefWidth="100.0" promptText="CODIGO">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <TextField id="txtProdNombre" fx:id="txtPNombre" editable="false" focusTraversable="false" layoutX="153.0" layoutY="47.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" promptText="NOMBRE">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <TextField id="txtPrecio" fx:id="txtPrecio" editable="false" focusTraversable="false" layoutX="153.0" layoutY="82.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" promptText="PRECIO">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <TextField id="txtCantidad" fx:id="txtCantidad" layoutX="438.0" layoutY="9.0" maxWidth="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" prefWidth="75.0" promptText="CANTIDAD" text="0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <Label layoutX="362.0" layoutY="14.0" text="CANTIDAD" />
+                  <Button fx:id="btnAddProduct" layoutX="412.0" layoutY="57.0" mnemonicParsing="false" onAction="#AddProduct" text="Añadir" />
+               </children>
+            </AnchorPane>
+        </content>
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TitledPane>
+      <VBox>
+         <children>
+            <BorderPane>
+               <center>
+                  <HBox alignment="CENTER" prefWidth="993.0">
+                     <children>
+                        <TableView fx:id="tvProductos" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="NEVER">
+                          <columns>
+                            <TableColumn fx:id="col_id" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="75.0" sortable="false" text="ID" />
+                            <TableColumn fx:id="col_name" editable="false" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="75.0" sortable="false" text="NOMBRE PRODUCTO" />
+                              <TableColumn fx:id="col_cant" editable="false" maxWidth="80.0" minWidth="80.0" prefWidth="75.0" sortable="false" text="CANTIDAD" />
+                              <TableColumn fx:id="col_prec" editable="false" maxWidth="90.0" minWidth="90.0" prefWidth="75.0" sortable="false" text="PRECIO" />
+                              <TableColumn fx:id="col_tot" editable="false" maxWidth="90.0" minWidth="90.0" prefWidth="75.0" sortable="false" text="TOTAL" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <VBox alignment="TOP_CENTER" fillWidth="false" spacing="15.0">
+                           <HBox.margin>
+                              <Insets left="10.0" top="10.0" />
+                           </HBox.margin>
+                           <children>
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <Label text="SUBTOTAL" />
+                                    <TextField id="txtSubtotal" fx:id="txtSubtotal" disable="true" editable="false" promptText="SUBTOTAL">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font></TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <Label text="I.V.A" />
+                                    <TextField id="txtIva" fx:id="txtIva" disable="true" editable="false" promptText="IVA">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font></TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <Label text="TOTAL DE COMPRA" />
+                                    <TextField id="txtTotal" fx:id="txtTotal" disable="true" editable="false" promptText="TOTAL">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font></TextField>
+                                 </children>
+                              </VBox>
+                              <HBox spacing="10.0">
+                                 <children>
+                                    <Button fx:id="btnCancel" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancel" prefWidth="90.0" text="CANCELAR" />
+                                    <Button fx:id="btnPagar" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#pay" prefWidth="90.0" text="PAGAR" textAlignment="CENTER" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="5.0" />
+                     </padding>
+                  </HBox>
+               </center>
+            </BorderPane>
+         </children>
+      </VBox>
+   </children>
+   <stylesheets>
+      <URL value="@CSS/user.css" />
+      <URL value="@CSS/dark-theme.css" />
+   </stylesheets>
+</VBox>

@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox id="root" minHeight="700.0" minWidth="1025.0" onKeyPressed="#GeneralKeyPressed" prefHeight="693.0" prefWidth="1025.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane maxHeight="30.0" minHeight="30.0">
+         <right>
+            <Button id="close" fx:id="btnClose" maxWidth="60.0" minWidth="60.0" mnemonicParsing="false" onAction="#onClose" text="X" translateX="2.0" translateY="-2.0" BorderPane.alignment="CENTER" />
+         </right>
+      </BorderPane>
+      <BorderPane VBox.vgrow="NEVER">
+         <left>
+            <Button mnemonicParsing="false" onAction="#onLogOut" text="Cerrar Sesion" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#goToCajero" text="Ingresar a Cajero" BorderPane.alignment="CENTER" />
+         </right>
+         <center>
+            <Label id="title" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Panel de Administracion" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+         </center>
+         <padding>
+            <Insets left="5.0" right="5.0" />
+         </padding>
+      </BorderPane>
+      <TabPane id="tab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+        <tabs>
+          <Tab closable="false" text="Administrar empleados">
+               <content>
+                  <VBox spacing="5.0">
+                     <children>
+                        <TitledPane id="titled" maxWidth="1.7976931348623157E308" text="Añadir Empleado">
+                           <content>
+                              <GridPane maxWidth="1.7976931348623157E308" prefHeight="220.0">
+                                <columnConstraints>
+                                  <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="ALWAYS" maxWidth="132.0" minWidth="132.0" prefWidth="86.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="300.0" minWidth="200.0" prefWidth="300.0" />
+                                    <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="100.0" minWidth="100.0" prefWidth="98.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="388.0" minWidth="10.0" prefWidth="388.0" />
+                                  <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="89.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="26.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="35.0" vgrow="ALWAYS" />
+                                    <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="20.0" vgrow="ALWAYS" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label alignment="CENTER_RIGHT" text="ID:" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" text="Nombres:" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" text="Apellidos:" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" text="Cedula:" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Email:" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" text="Estado Civil:" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Direccion:" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Contraseña:" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <ComboBox fx:id="cboxEstado" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="40.0" prefHeight="30.0" prefWidth="140.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.rowIndex="5" GridPane.vgrow="NEVER">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </ComboBox>
+                                    <CheckBox fx:id="cbAdmin" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="30.0" />
+                                       </GridPane.margin>
+                                    </CheckBox>
+                                    <Label text="Admin:" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField fx:id="txtID" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" promptText="ID" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="txtNom" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" promptText="Nombres" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="txtApellido" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" promptText="Apellidos" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="txtCedula" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" promptText="Cedula" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="txtDir" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" promptText="Direccion" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="txtEmail" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" promptText="Email" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="txtPassword" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" promptText="Contraseña" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <Button fx:id="btnApply" alignment="CENTER" minWidth="-Infinity" mnemonicParsing="false" onAction="#onApplyClick" onMouseClicked="#onApplyClick" prefWidth="80.0" text="Agregar" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </GridPane.margin>
+                                       <padding>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </padding>
+                                    </Button>
+                                 </children>
+                              </GridPane>
+                           </content>
+                        </TitledPane>
+                        <TitledPane collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Tabla de empleado" VBox.vgrow="ALWAYS">
+                           <content>
+                              <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" spacing="5.0">
+                                 <children>
+                                    <TitledPane animated="false" collapsible="false" contentDisplay="CENTER" maxHeight="125.0" text="Opciones">
+                                       <content>
+                                          <BorderPane>
+                                             <bottom>
+                                                <HBox minHeight="30.0" spacing="10.0" BorderPane.alignment="CENTER_LEFT">
+                                                   <children>
+                                                      <Button id="delbutton" fx:id="btnEmpDel" mnemonicParsing="false" onAction="#onDeleteButton" text="Borrar" textAlignment="CENTER" textFill="RED" />
+                                                      <Button id="modbutton" fx:id="btnEmpMod" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#onMod" text="Modificar" />
+                                                   </children>
+                                                </HBox>
+                                             </bottom>
+                                             <center>
+                                                <HBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+                                                   <children>
+                                                      <TextField id="searchbox" fx:id="txtSearchEmp" prefWidth="300.0" promptText="Busqueda por nombre , Cedula o ID" stylesheets="@CSS/Admin.css" />
+                                                      <Button id="searchbtn" fx:id="btnEmpSearch" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onSearch" prefHeight="30.0" text="Buscar" />
+                                                   </children>
+                                                </HBox>
+                                             </center>
+                                          </BorderPane>
+                                       </content>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
+                                    </TitledPane>
+                                    <TableView fx:id="tEmpleado" editable="true" onMouseClicked="#onEmpCellClicked" stylesheets="@CSS/Admin.css" VBox.vgrow="SOMETIMES">
+                                       <opaqueInsets>
+                                          <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                                       </opaqueInsets>
+                                       <columns>
+                                          <TableColumn fx:id="col_id_e" maxWidth="90.0" minWidth="90.0" prefWidth="75.0" text="ID" />
+                                          <TableColumn fx:id="col_cedula_e" maxWidth="110.0" minWidth="110.0" prefWidth="81.0" text="CEDULA" />
+                                          <TableColumn fx:id="col_nombre_e" minWidth="300.0" prefWidth="107.0" text="NOMBRES" />
+                                          <TableColumn fx:id="col_apellido_e" minWidth="300.0" prefWidth="101.0" text="APELLIDOS" />
+                                          <TableColumn fx:id="col_dir_e" minWidth="100.0" prefWidth="121.0" sortable="false" text="DIRECCION" />
+                                          <TableColumn fx:id="col_email_e" minWidth="100.0" prefWidth="104.0" sortable="false" text="EMAIL" />
+                                          <TableColumn fx:id="col_estado_civil" maxWidth="110.0" minWidth="110.0" prefWidth="106.0" text="ESTADO CIVIL" />
+                                          <TableColumn fx:id="col_pass" maxWidth="140.0" minWidth="120.0" prefWidth="124.0" sortable="false" text="CONTRASEÑA" />
+                                          <TableColumn fx:id="col_admin" maxWidth="100.0" minWidth="100.0" prefWidth="89.0" resizable="false" sortable="false" text="ADMIN" />
+                                       </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </TitledPane>
+                     </children>
+                  </VBox>
+               </content>
+          </Tab>
+          <Tab closable="false" text="Administrar clientes">
+               <content>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="613.0" prefWidth="1007.0" spacing="5.0">
+                     <children>
+                        <TitledPane maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" text="Añadir Cliente">
+                           <content>
+                              <GridPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="1025.0">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="13.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.0" minWidth="75.0" prefWidth="215.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.0" minWidth="0.0" prefWidth="80.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="526.0" minWidth="10.0" prefWidth="268.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="443.0" minWidth="10.0" prefWidth="263.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button fx:id="btnApplyCli" mnemonicParsing="false" onAction="#addClient" prefWidth="80.0" text="Agregar" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </GridPane.margin>
+                                       <padding>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </padding>
+                                    </Button>
+                                    <Label alignment="CENTER_RIGHT" text="Cedula:" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                                       <GridPane.margin>
+                                          <Insets left="4.0" right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" text="Nombres:" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                                       <GridPane.margin>
+                                          <Insets left="4.0" right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" text="Apellidos:" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                                       <GridPane.margin>
+                                          <Insets left="4.0" right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" text="Telefono:" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                                       <GridPane.margin>
+                                          <Insets left="4.0" right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" text="Direccion:" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                                       <GridPane.margin>
+                                          <Insets left="4.0" right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" text="E-mail:" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                                       <GridPane.margin>
+                                          <Insets left="4.0" right="4.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField fx:id="txtCliCedula" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="135.0" promptText="Cedula" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="txtCliNombre" promptText="Nombres" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="txtCliApellido" promptText="Apellidos" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="txtCliTelf" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="135.0" promptText="Telefono" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="txtCliDir" promptText="Direccion" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="txtCliEmail" promptText="E-mail" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                 </children>
+                              </GridPane>
+                           </content>
+                        </TitledPane>
+                        <TitledPane animated="false" collapsible="false" text="Tabla Clientes" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                           <content>
+                              <VBox spacing="5.0">
+                                 <children>
+                                    <TitledPane collapsible="false" maxHeight="125.0" text="Opciones" VBox.vgrow="NEVER">
+                                       <content>
+                                          <BorderPane>
+                                             <center>
+                                                <HBox alignment="CENTER" minHeight="30.0" spacing="10.0" BorderPane.alignment="CENTER">
+                                                   <children>
+                                                      <TextField id="searchbox" fx:id="txtSearchClient" maxWidth="-Infinity" prefWidth="300.0" promptText="Busqueda por Nombre o cedula" stylesheets="@CSS/Admin.css" />
+                                                      <Button id="searchbtn" fx:id="btnCliSearch" mnemonicParsing="false" onAction="#searchClient" text="Buscar" />
+                                                   </children>
+                                                </HBox>
+                                             </center>
+                                             <bottom>
+                                                <HBox minHeight="30.0" spacing="10.0" BorderPane.alignment="CENTER">
+                                                   <children>
+                                                      <Button id="delbutton" fx:id="btnCliDel" mnemonicParsing="false" onAction="#onDeleteButton" text="Borrar" textFill="RED" />
+                                                      <Button id="modbutton" fx:id="btnCliMod" disable="true" mnemonicParsing="false" onAction="#onClientMod" text="Modificar" />
+                                                   </children>
+                                                </HBox>
+                                             </bottom>
+                                          </BorderPane>
+                                       </content>
+                                    </TitledPane>
+                                    <TableView fx:id="tClientes" VBox.vgrow="SOMETIMES">
+                                      <columns>
+                                        <TableColumn fx:id="col_ced_c" prefWidth="97.0" text="CEDULA" />
+                                        <TableColumn fx:id="col_nombre_c" maxWidth="350.0" minWidth="250.0" prefWidth="111.0" text="NOMBRE" />
+                                          <TableColumn fx:id="col_apel_c" maxWidth="350.0" minWidth="250.0" prefWidth="111.0" text="APELLIDO" />
+                                          <TableColumn fx:id="col_telf_c" prefWidth="144.0" text="TELEFONO" />
+                                          <TableColumn fx:id="col_dir_c" prefWidth="148.0" text="DIRECCION" />
+                                          <TableColumn fx:id="col_email_c" minWidth="0.0" prefWidth="275.0" text="EMAIL" />
+                                      </columns>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </TitledPane>
+                     </children>
+                  </VBox>
+               </content>
+            </Tab>
+            <Tab text="Administrar Productos">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                     <children>
+                        <TitledPane maxWidth="1.7976931348623157E308" minHeight="-Infinity" text="Añadir producto">
+                           <content>
+                              <GridPane>
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="75.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="200.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="140.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="100.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="35.0" minHeight="35.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="35.0" minHeight="35.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="35.0" minHeight="35.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label text="ID:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets right="2.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Nombre:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets right="2.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Precio:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets right="2.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Cantidad Disponible:" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets right="2.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Button mnemonicParsing="false" onAction="#addProduct" prefWidth="80.0" text="Agregar" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                       <padding>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </padding>
+                                       <GridPane.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </GridPane.margin></Button>
+                                    <TextField fx:id="txtProductID" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" promptText="ID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtProductName" promptText="Nombre producto" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtProductPrice" maxWidth="120.0" promptText="precio producto" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <TextField fx:id="txtProductCuant" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" promptText="Cantidad" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                           </content>
+                        </TitledPane>
+                        <TitledPane collapsible="false" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" text="Tabla de productos" VBox.vgrow="ALWAYS">
+                           <content>
+                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                 <children>
+                                    <TitledPane animated="false" collapsible="false" maxHeight="125.0" text="Opciones">
+                                       <content>
+                                          <BorderPane>
+                                             <bottom>
+                                                <HBox minHeight="30.0" spacing="10.0" BorderPane.alignment="CENTER">
+                                                   <children>
+                                                      <Button id="delbutton" mnemonicParsing="false" text="Borrar" />
+                                                    <Button id="modbutton" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#onProductMod" text="Modificar" />
+                                                   </children>
+                                                </HBox>
+                                             </bottom>
+                                             <center>
+                                                <HBox alignment="CENTER" minHeight="30.0" spacing="10.0" BorderPane.alignment="CENTER">
+                                                   <children>
+                                                      <TextField id="searchbox" fx:id="txtSearchProduct" maxWidth="1.7976931348623157E308" prefWidth="300.0" promptText="Busar por nombre o ID" />
+                                                    <Button id="searchbtn" mnemonicParsing="false" onAction="#searchProduct" text="Buscar" />
+                                                   </children>
+                                                </HBox>
+                                             </center>
+                                          </BorderPane>
+                                       </content>
+                                    </TitledPane>
+                                    <TableView fx:id="tvProduct" fixedCellSize="0.0" maxHeight="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
+                                      <columns>
+                                        <TableColumn fx:id="col_prod_id" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" text="ID" />
+                                        <TableColumn fx:id="col_prod_name" maxWidth="1.7976931348623157E308" minWidth="250.0" prefWidth="75.0" text="NOMBRE" />
+                                          <TableColumn fx:id="col_prod_price" maxWidth="90.0" minWidth="90.0" prefWidth="75.0" resizable="false" text="PRECIO" />
+                                          <TableColumn fx:id="col_prod_cuant" maxWidth="90.0" minWidth="90.0" prefWidth="75.0" resizable="false" text="CANTIDAD" />
+                                      </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                 </children>
+                              </VBox>
+                           </content>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TitledPane>
+                     </children>
+                  </VBox>
+               </content>
+            </Tab>
+            <Tab text="Pedidos">
+               <content>
+                  <VBox alignment="TOP_CENTER" spacing="10.0">
+                     <children>
+                        <TitledPane id="option" animated="false" collapsible="false" focusTraversable="false" text="Opciones" VBox.vgrow="NEVER">
+                           <content>
+                              <BorderPane>
+                                 <center>
+                                    <HBox alignment="CENTER" minHeight="30.0" spacing="10.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <TextField fx:id="txtSearchProforma" prefWidth="300.0" promptText="Buscar por ID o Cedula de Cliente" HBox.hgrow="NEVER" />
+                                        <Button mnemonicParsing="false" onAction="#searchProforma" text="Buscar" />
+                                       </children>
+                                    </HBox>
+                                 </center>
+                                 <bottom>
+                                    <HBox fx:id="debugDateSearch" alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <Label text="Desde" />
+                                          <DatePicker fx:id="dpFirst" />
+                                          <Label text="Hasta" />
+                                          <DatePicker fx:id="dpEnd" />
+                                          <Button alignment="CENTER" mnemonicParsing="false" onAction="#searchByDate" text="Buscar" />
+                                       </children>
+                                    </HBox>
+                                 </bottom>
+                              </BorderPane>
+                           </content>
+                        </TitledPane>
+                        <TitledPane collapsible="false" text="Tabla de pedidos" VBox.vgrow="ALWAYS">
+                           <content>
+                              <VBox alignment="CENTER" spacing="10.0">
+                                 <children>
+                                    <TableView fx:id="tvProforma" VBox.vgrow="ALWAYS">
+                                      <columns>
+                                        <TableColumn fx:id="col_prof_id" maxWidth="500.0" minWidth="500.0" prefWidth="75.0" text="ID" />
+                                        <TableColumn fx:id="col_prof_ced" maxWidth="150.0" minWidth="150.0" prefWidth="75.0" text="CEDULA CLIENTE" />
+                                          <TableColumn fx:id="col_prof_prod" maxWidth="-1.0" minWidth="98.0" prefWidth="-1.0" text="ID PRODUCTO" />
+                                          <TableColumn fx:id="col_prof_cant" maxWidth="-1.0" minWidth="100.0" prefWidth="75.0" text="CANTIDAD" />
+                                          <TableColumn fx:id="col_prof_price" maxWidth="-1.0" minWidth="100.0" prefWidth="75.0" text="PRECIO" />
+                                          <TableColumn fx:id="col_prof_tot" maxWidth="-1.0" minWidth="100.0" prefWidth="75.0" text="TOTAL" />
+                                          <TableColumn fx:id="col_prof_fecha" maxWidth="250.0" minWidth="150.0" prefWidth="75.0" text="FECHA DE EMISION" />
+                                          <TableColumn fx:id="col_prof_emp" maxWidth="150.0" minWidth="150.0" prefWidth="75.0" text="EMPLEADO A CARGO" />
+                                      </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                 </children>
+                              </VBox>
+                           </content></TitledPane>
+                     </children>
+                  </VBox>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+   <stylesheets>
+      <URL value="@CSS/Admin.css" />
+      <URL value="@CSS/dark-theme.css" />
+   </stylesheets>
+</VBox>
