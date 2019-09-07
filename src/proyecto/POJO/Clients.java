@@ -1,7 +1,15 @@
 package proyecto.POJO;
 
+
+/**
+ * POJO de Clientes
+ * @author Neoterux
+ */
 public class Clients {
     
+    /**
+     * POJO Info
+     */
     private String cedula;
     private String nombre;
     private String apellido;
@@ -97,6 +105,10 @@ public class Clients {
         return (nombre == null && nombre.isEmpty() && apellido == null && apellido.isEmpty())?"":this.nombre + " " + this.apellido;
     }
     
+    /**
+     * Convertir este POJO a MODEL
+     * @return 
+     */
     public ClientsModel toModel(){
         ClientsModel cm = new ClientsModel();
         cm.setNombre(nombre);

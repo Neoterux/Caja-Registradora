@@ -22,17 +22,33 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 /**
- *
- * @author labfe
+ *  Clase Controlador para el dialogo que muestra los codigos de barra de la orden
+ * @author Neoterux
  */
 public class BarcodeDialog {
+    /**
+     * Objeto que referencia a un elemento del GUI
+     */
     @FXML
     private ImageView ivBarcode;
-    private int BARCODE_WIDTH = 400;
-    private int BARCODE_HEIGHT = 120;
     
+    /**
+     * Constantes para la construccion del codigo de barras
+     */
+    private final int BARCODE_WIDTH = 400;
+    private final int BARCODE_HEIGHT = 120;
+    
+    /**
+     * Objetos que pertenecen a la visualizacion de la interfaz
+     */
     private Scene scene;
     private Stage stage;
+    
+    /**
+     * Constructor principal
+     * @param code  codigo de la factura que se va a mostrar
+     * @param owner ventana padre de del dialogo
+     */
     public BarcodeDialog(String code, Window owner) {
         stage = new Stage();
         try{
@@ -50,12 +66,14 @@ public class BarcodeDialog {
             stage.showAndWait();
         }catch(IOException | NullPointerException e){
         e.printStackTrace();
-        }
-        
+        }        
     }
     
   
-    
+    /**
+     * Metodo para generar el codigo de barra
+     * @param code codigo en el que se basa el codigo de barra 
+     */
     private void generateQR(String code){
         
         try{

@@ -8,29 +8,33 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.Alert;
+import proyecto.BD.Connector;
 
 /**
- * TODO: Arreglar clase de Workers y hacerlo un POJO comun, adicionalmente hacer un WorkerModel a partir del POJO
+ * @author Neoterux
  */
 public class WorkerDaoImpl implements WorkersDAO {
+    private final boolean DEBUG_ENABLED = false;
+    
+    
+    
+    private Connection conn;
+    private PreparedStatement stm;
+    private String sql;
 
     /**
-     *
-     * @param workers
-     * @return
+     * Registrar trabajador en la base de datos
+     * @param worker Trabajador a registrar
+     * @return true->Si se ejecuto con exito
+     *         false->Si tuvo errores al ejecutarse
      */
-    private final boolean DEBUG_ENABLED = false;
-
     @Override
     public boolean reg(Worker worker) {
         boolean register = false;
-        PreparedStatement stm = null;
-        Connection conn = null;
-        String sql = "INSERT IGNORE INTO empleados VALUES (?,?,?,?,?,?,?,?,?)";
+        sql = "INSERT INTO empleados VALUES (?,?,?,?,?,?,?,?,?)";
         try {
-            conn = proyecto.BD.Connection.connect(DEBUG_ENABLED);
+            conn = Connector.connect(DEBUG_ENABLED);
             stm = conn.prepareStatement(sql);
-
             stm.setString(1, worker.getId());
             stm.setString(2, worker.getNombre());
             stm.setString(3, worker.getApellido());
@@ -40,30 +44,28 @@ public class WorkerDaoImpl implements WorkersDAO {
             stm.setString(7, worker.getEmail());
             stm.setString(8, worker.getPass());
             stm.setBoolean(9, worker.isAdmin());
-            
-            System.out.println(stm.toString());
-            stm.executeUpdate();
-            register = true;
-            stm.close();
+            System.out.println("[ROWS AFFECTED]: "+ stm.executeUpdate());
             conn.close();
+            register = true;
         }catch (SQLException e){
             System.out.println("\n[ERROR CLASS = 'WORKERDAOIMPL' ]: Error al Ejecutar reg {\n" + e.getMessage() +"\n}\n");
         }
         return register;
     }
 
+    /**
+     * Obtiene una lista de los empleados registrados en la base de datos
+     * @return lista de los empleados
+     */
     @Override
     public List<Worker> get() {
-        Connection conn = null;
-        Statement stm = null;
-        ResultSet rs = null;
-
-        String sql = "SELECT * FROM empleados ORDER BY nombre;";
+        ResultSet rs;
+        sql = "SELECT * FROM empleados ORDER BY nombre;";
         List<Worker> workerList = new ArrayList<>();
 
         try {
-            conn = proyecto.BD.Connection.connect(DEBUG_ENABLED);
-            stm = conn.createStatement();
+            conn = Connector.connect(DEBUG_ENABLED);
+            stm = conn.prepareStatement(sql);
             rs = stm.executeQuery(sql);
             while (rs.next()){
                 Worker w = new Worker();
@@ -89,15 +91,19 @@ public class WorkerDaoImpl implements WorkersDAO {
         return workerList;
     }
 
+    /**
+     * Actualiza el registro del trabajador con nuevos datos
+     * @param worker trabajador al que se modifica
+     * @return true->Si se ejecuto con exito
+     *         false->Si tuvo errores al ejecutarse
+     */
     @Override
     public boolean update(Worker worker) {
-        Connection conn = null;
-        PreparedStatement stm = null;
         boolean updated = false;
         //String sql = "UPDATE  empleados SET nombre = ? WHERE id = ?";
-        String sql = "UPDATE  empleados SET id=?, nombre = ?, apellido = ?, cedula = ?, estado_civil = ?, direccion = ?, email = ?, pass = ?, isAdmin = ? WHERE id = ? OR cedula = ?";
+        sql = "UPDATE  empleados SET id=?, nombre = ?, apellido = ?, cedula = ?, estado_civil = ?, direccion = ?, email = ?, pass = ?, isAdmin = ? WHERE id = ? OR cedula = ?";
         try {
-            conn = proyecto.BD.Connection.connect(DEBUG_ENABLED);
+            conn = Connector.connect(DEBUG_ENABLED);
             stm = conn.prepareStatement(sql);
             stm.setString(1, worker.getId());
             stm.setString(2, worker.getNombre());
@@ -110,10 +116,7 @@ public class WorkerDaoImpl implements WorkersDAO {
             stm.setBoolean(9, worker.isAdmin());
             stm.setString(10, worker.getId());
             stm.setString(11, worker.getCedula());
-            
-            System.out.println(stm.toString());
             System.out.println("Rows affecgted : "+  stm.executeUpdate());
-            
             conn.close();
             updated = true;
 
@@ -124,21 +127,23 @@ public class WorkerDaoImpl implements WorkersDAO {
         return updated;
     }
 
+    /**
+     * Borra a un empleado de la Base de datos
+     * @param worker trabajador a eliminar
+     * @return true->Si se ejecuto con exito
+     *         false->Si tuvo errores al ejecutarse
+     */
     @Override
     public boolean delete(Worker worker) {
-        Connection conn = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        String sql ="DELETE FROM empleados WHERE id=?;";
+        ResultSet rs;
+        sql ="DELETE FROM empleados WHERE id=?;";
         boolean deleted = false;
         try {
-            conn = proyecto.BD.Connection.connect(DEBUG_ENABLED);
+            conn = Connector.connect(DEBUG_ENABLED);
             stm = conn.prepareStatement(sql);
-
             stm.setString(1, worker.getId());
-
-            stm.execute(sql);
-            stm.close();
+            System.out.println("[ROWS AFFECTED]: " + stm.executeUpdate());
+            conn.close();
             deleted = true;
 
         }catch (SQLException e){
@@ -147,15 +152,19 @@ public class WorkerDaoImpl implements WorkersDAO {
         return false;
     }
 
+    /**
+     * Verifica si el trabajador posee privilegios de administrador
+     * @param worker trabajador a verificar
+     * @return true->Si se ejecuto con exito
+     *         false->Si tuvo errores al ejecutarse
+     */
     @Override
     public boolean isAdmin(Worker worker) {
-        Connection conn = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        String sql ="SELECT isAdmin FROM empleados WHERE id = ? AND pass = ?";
+        ResultSet rs;
+        sql ="SELECT isAdmin FROM empleados WHERE id = ? AND pass = ?";
         boolean isAdmin = false;
         try {
-            conn = proyecto.BD.Connection.connect(DEBUG_ENABLED);
+            conn = Connector.connect(DEBUG_ENABLED);
             stm = conn.prepareStatement(sql);
 
             stm.setString(1, worker.getId());
@@ -164,7 +173,7 @@ public class WorkerDaoImpl implements WorkersDAO {
             if (rs.next()){
                 isAdmin = rs.getBoolean("isAdmin");
             }
-            stm.close();
+            conn.close();
 
         }catch (SQLException e){
             System.out.println("\n[ERROR CLASS = 'WORKERDAOIMPL' ]: Error al chequear permisos {\n" + e.getSQLState() +"\n}\n");
@@ -173,15 +182,20 @@ public class WorkerDaoImpl implements WorkersDAO {
     }
 
 
+    /**
+     * Crea una lista de trabajadores de acuerdo a los nombres
+     * @param name nombres a buscar
+     * @return true->Si se ejecuto con exito
+     *         false->Si tuvo errores al ejecutarse
+     */
     public List<Worker> search(String name){
-        Connection conn = null;
-        Statement stm = null;
         ResultSet rs = null;
-        String sql ="SELECT * FROM empleados WHERE nombre like'"+name+"%'";
+        sql ="SELECT * FROM empleados WHERE nombre like ?";
         List<Worker> workerList = new ArrayList<>();
         try {
-            conn = proyecto.BD.Connection.connect(DEBUG_ENABLED);
-            stm = conn.createStatement();
+            conn = Connector.connect(DEBUG_ENABLED);
+            stm = conn.prepareStatement(sql);
+            stm.setString(1, name + "%");
             rs = stm.executeQuery(sql);
             while (rs.next()){
                 Worker w = new Worker();
@@ -196,10 +210,9 @@ public class WorkerDaoImpl implements WorkersDAO {
                 w.setAdmin(rs.getBoolean("isAdmin"));
 
                 workerList.add(w);
-
             }
 
-            stm.close();
+            conn.close();
 
         }catch (SQLException e){
             System.out.println("\n[ERROR("+e.getSQLState()+") CLASS = 'WORKERDAOIMPL' ]: Error al Obtener Busqueda {\n" + e.getMessage() +"\n}\n");
@@ -208,15 +221,19 @@ public class WorkerDaoImpl implements WorkersDAO {
 
     }
 
+    /**
+     * Obtiene datos de un trabajador especifico de acuerdo a su id y pass
+     * @param worker datos del trabajador a buscar
+     * @return Los datos del trabajador
+     */
     @Override
     public Worker specific(Worker worker) {
-        Connection con;
         PreparedStatement pstm;
         Worker w = new Worker();
         final String sql = "SELECT * FROM empleados WHERE id=? AND pass=?";
         try {
-            con = proyecto.BD.Connection.connect(DEBUG_ENABLED);
-            pstm = con.prepareStatement(sql);
+            conn = Connector.connect(DEBUG_ENABLED);
+            pstm = conn.prepareStatement(sql);
             pstm.setString(1, worker.getId());
             pstm.setString(2, worker.getPass());
             ResultSet rs = pstm.executeQuery();
@@ -233,7 +250,7 @@ public class WorkerDaoImpl implements WorkersDAO {
             w.setEmail(rs.getString("email"));
             w.setPass(rs.getString("pass"));
             w.setAdmin(rs.getBoolean("isAdmin"));
-            con.close();
+            conn.close();
             rs.close();
         } catch (SQLException e) {
         }

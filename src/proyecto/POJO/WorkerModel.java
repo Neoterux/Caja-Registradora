@@ -5,6 +5,11 @@ import javafx.beans.property.SimpleStringProperty;
 
 import java.io.Serializable;
 
+
+/**
+ * Clase modelo del trabajador
+ * @author Neoterux
+ */
 public class WorkerModel  implements Serializable {
 
     private SimpleStringProperty id = new SimpleStringProperty();
@@ -18,7 +23,9 @@ public class WorkerModel  implements Serializable {
     private SimpleBooleanProperty isAdmin = new SimpleBooleanProperty();
 
 
-
+/**
+ * Constructor de la clase
+ */
     public WorkerModel(){}
     public WorkerModel(String id, String nombre, String apellido, String cedula, String estado_civil, String direccion, String email, String pass, boolean isAdmin){
         this.id.set(id);
@@ -32,6 +39,11 @@ public class WorkerModel  implements Serializable {
         this.isAdmin.set(isAdmin);
     }
 
+    
+    /**
+     * Describe los elementos de la clase
+     * @return string que describe la clase
+     */
     @Override
     public String toString() {
         return "\n[ITEMS]:{" +
@@ -47,34 +59,66 @@ public class WorkerModel  implements Serializable {
                 "\n}\n";
     }
 
+    /**
+     * Obtiene el id
+     * @return el id
+     */
     public SimpleStringProperty idProperty() {
         return id;
     }
 
+    /**
+     * Obtiene el nomnbre
+     * @return el nombre
+     */
     public SimpleStringProperty nombreProperty() {
         return nombre;
     }
 
+    /**
+     * Obtiene el apellido
+     * @return el apellido
+     */
     public SimpleStringProperty apellidoProperty() {
         return apellido;
     }
 
+    /**
+     * Obtiene la cedula 
+     * @return la cedula
+     */
     public SimpleStringProperty cedulaProperty() {
         return cedula;
     }
 
+    /**
+     * Obtiene le email del empleado
+     * @return el email
+     */
     public SimpleStringProperty emailProperty() {
         return email;
     }
 
+    /**
+     * Obtiene la contraseña
+     * @return la contraseña
+     */
     public SimpleStringProperty passProperty() {
         return pass;
     }
 
+    /**
+     * Obtiene los privilegios de Admin
+     * @return si es admin o no
+     */
     public SimpleBooleanProperty isAdminProperty() {
         return isAdmin;
     }
 
+    /**
+     * Obtiene 
+     * @return 
+     */
     public SimpleStringProperty estado_civilProperty(){return estado_civil;}
 
     public SimpleStringProperty direccionProperty(){return direccion;}

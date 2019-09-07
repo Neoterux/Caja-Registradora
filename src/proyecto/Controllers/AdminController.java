@@ -43,12 +43,17 @@ import proyecto.POJO.Worker;
 import proyecto.POJO.WorkerModel;
 import proyecto.Utils.NodeUtils;
 
-public class AdminController implements Initializable {
+
+/**
+ * Clase Controlador del panel de administracion
+ * @author Neoterux
+ */
+
+public class AdminController  implements Initializable, Runnable {
     
 
-
     /**
-     * Tab Empleados
+     * Objetos propios del FXML que van a referenciar a los objetos de la interfaz
      */
     
         @FXML
@@ -116,9 +121,7 @@ public class AdminController implements Initializable {
 
     @FXML
     private TextField txtSearchProforma;
-    /**
-     * Tab Clientes
-     */
+    
     @FXML
     private TextField txtCliCedula, txtCliNombre,txtCliApellido,txtCliTelf,txtCliDir, txtCliEmail;
 
@@ -193,7 +196,10 @@ public class AdminController implements Initializable {
 
 
 
-
+/**
+ * Metodo para ejecutar la accion de click a botones
+ * @param event evento click
+ */
     @FXML
     private void onApplyClick(Event event) {
 
@@ -240,9 +246,7 @@ public class AdminController implements Initializable {
 
     
     private Stage stage;
-    
     private Scene scene;
-    
     private Worker current_worker;
     private Alert emptyTextFieldAlert;
     private Alert succesfullDataAlert;
@@ -250,6 +254,11 @@ public class AdminController implements Initializable {
     private ControllerClient cc;
     private ControllerProduct cp;
     private ControllerOrder co;
+    
+    /**
+     * Constructor para construir el fxml y mostrarlo
+     * @param w Trabajador que inicio sesion
+     */
     public AdminController(Worker w){
         stage = new Stage();
         cw = new ControllerWorker();
@@ -299,6 +308,10 @@ public class AdminController implements Initializable {
     
     //--------------------------------------- FXML EVENTS -------------------------
      
+    /**
+     * Metodo para actualizar cuando se pulse el F5
+     * @param event click event
+     */
     @FXML
     void GeneralKeyPressed(KeyEvent event) {
         if(event.getCode() == KeyCode.F5){
@@ -308,20 +321,33 @@ public class AdminController implements Initializable {
             buildWorkerData();
         }
     }
+    
+    /**
+     * Metodo para dirigirse al cajero en caso de requerirlo
+     * @param event 
+     */
     @FXML
-    void goToCajero(ActionEvent event) {
-        
-        
+    void goToCajero(ActionEvent event) {      
        UserController uc = new UserController(current_worker, stage);
        stage.hide();
     }
     
+    
+    /**
+     * Metodo para el boton que simula el close
+     * @param event click event 
+     */
     @FXML
     void onClose(ActionEvent event) {
        Platform.setImplicitExit(true);
        stage.close();
     }
     
+    
+    /**
+     * Metodo para cerrar sesion
+     * @param event 
+     */
     @FXML
     void onLogOut(ActionEvent event) {
        stage.close();
@@ -330,18 +356,32 @@ public class AdminController implements Initializable {
         lg.show();
     }
     
+    /**
+     * Metodo para actualizar la tabla de productos
+     * @param event click event
+     */
     @FXML
     void onProductMod(ActionEvent event) {
         tvProduct.getItems().forEach(pm->{
             cp.update(pm.toProduct());
         });
     }
+    
+    /**
+     * Metodo para actualizar tabla de clientes
+     * @param event 
+     */
      @FXML
     void onClientMod(ActionEvent event) {
         tClientes.getItems().forEach(cm->{
             cc.update(cm.toClient());
         });
     }
+    
+    /**
+     * Metodo para añadir productos a la base de datos y a la tabla
+     * @param event click evento
+     */
      @FXML
     void addProduct(ActionEvent event) {
       if (NodeUtils.notIsNullOrEmpty(txtProductID, txtProductName, txtProductCuant, txtProductPrice)){
@@ -358,20 +398,28 @@ public class AdminController implements Initializable {
       }
     }
     
+    /**
+     * Metodo para buscar factura por ID o CID
+     * @param event click event
+     */
      @FXML
     void searchProforma(ActionEvent event) {
-       if(NodeUtils.isNullOrEmpty(txtSearchProforma)){
-           
+       if(NodeUtils.notIsNullOrEmpty(txtSearchProforma)){
+           Odata.clear();
            co.searchByIDorCID(txtSearchProforma.getText().trim()).forEach(Odata::add);
            tvProforma.setItems(Odata);
            
        }else{
         //Odata.clear();
-        
-        
+        buildPedidoData();
        }
     }
     
+    
+    /**
+     * Metodo para buscar clientes
+     * @param event click event
+     */
     @FXML
     void searchClient(ActionEvent event) {
         if(NodeUtils.isNullOrEmpty(txtSearchClient)){
@@ -386,11 +434,24 @@ public class AdminController implements Initializable {
         }
     }
 
+    /**
+     * Metodo para buscar producto
+     * @param event click event
+     */
     @FXML
     void searchProduct(ActionEvent event) {
-
+        if (NodeUtils.notIsNullOrEmpty(txtSearchProduct)){
+            Pdata.clear();
+            
+        }else{
+            buildProductData();
+        }
     }
     
+    /**
+     * Metodo para buscar por fecha
+     * @param event click event
+     */
      @FXML
     void searchByDate(ActionEvent event) {
        Odata.clear();
@@ -404,6 +465,11 @@ public class AdminController implements Initializable {
        tvProforma.setItems(Odata);
     }
     
+    
+    /**
+     * Metodo para añadir cliente a la tabla
+     * @param event click event
+     */
     @FXML
     void addClient(ActionEvent event) {
         if(NodeUtils.notIsNullOrEmpty(txtCliCedula, txtCliApellido, txtCliNombre, txtCliEmail, txtCliTelf, txtCliDir)){
@@ -424,11 +490,19 @@ public class AdminController implements Initializable {
     
     // ------------------------------------------------- END FXML EVENTS ----------------------------------------------------------
     
-
+    /**
+     * Objetos para añadir datos a las tablas
+     */
     private ObservableList<WorkerModel> Wdata;
     private ObservableList<ClientsModel> Cdata;
     private ObservableList<ProductModel> Pdata;
     private ObservableList<OrderModel> Odata;
+    
+    /**
+     * Metodo que autoinicializa el controlador
+     * @param location direccion del FXML
+     * @param resources 
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Wdata = FXCollections.observableArrayList();
@@ -450,6 +524,15 @@ public class AdminController implements Initializable {
         });
 
     }
+    
+    @Override
+    public void run() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    /**
+     * Metodo para cargar datos en 2do plano
+     */
     private void loadData(){
         Alert loadAlert = new Alert(Alert.AlertType.INFORMATION, "Cargando Datos, Por favor espere", ButtonType.APPLY);
         Platform.runLater(()->{
@@ -465,7 +548,7 @@ public class AdminController implements Initializable {
     
 
     /**
-     * Initialize Empleados Tab
+     * Cargar datos de empleado de la base de datos a la tabla
      */
     private void buildWorkerData(){
         
@@ -478,18 +561,23 @@ public class AdminController implements Initializable {
             tEmpleado.setItems(Wdata);
     }
     
+    /**
+     * Metodo para cargar datos de clientes de la base de datos a la tabla
+     */
     private void buildClientData() {
         
         Cdata.clear();
         cc.list().forEach((client)->{
             Cdata.add(client.toModel());
             System.out.println(client.toString());
-        
         });
-        
         tClientes.setItems(Cdata);
     }
     
+    
+    /**
+     * Metodo para cargar datos de productos de la base de datos a la tabla
+     */
     private void buildProductData(){
         Pdata.clear();
         cp.list().forEach((product) ->{
@@ -499,33 +587,46 @@ public class AdminController implements Initializable {
         tvProduct.setItems(Pdata);
     }
     
+    
+    /**
+     * Metodo para cargar datos de pedidos de la base de datos a la tabla
+     */
     private void buildPedidoData(){
         Odata.clear();
         co.list().forEach((order)->{
             Odata.add(order.toModel());
         });
-        
         tvProforma.setItems(Odata);
     }
     
+    /**
+     * Metodo para click en el cell de empleado
+     * @param mouseEvent 
+     */
     public void onEmpCellClicked(MouseEvent mouseEvent) {
-
         System.out.println(tEmpleado.getSelectionModel().getSelectedItem().toString());
         btnEmpMod.setDisable(false);
-
     }
 
-    public void onMod(ActionEvent actionEvent) {
-        
+    
+    /**
+     * Metodo para modificar empleado de la tabla
+     * @param actionEvent 
+     */
+    public void onMod(ActionEvent actionEvent) {        
          tEmpleado.getItems().forEach(csrm->{
             System.out.println(csrm.toString());
-            cw.update(csrm.toWorker());
-        
+            cw.update(csrm.toWorker());        
         });
          buildWorkerData();
          ((Button)actionEvent.getSource()).setDisable(true);
     }
-
+    
+    
+    /**
+     * Metodo para actualizar tabla de clientes y empleado
+     * @param actionEvent 
+     */
     public void onUpdate(ActionEvent actionEvent) {
         if(actionEvent.getSource().equals(btnEmpUp)){
             /**
@@ -542,6 +643,11 @@ public class AdminController implements Initializable {
         }
     }
 
+    
+    /**
+     * Metodo para buscar empleados
+     * @param actionEvent 
+     */
     public void onSearch(ActionEvent actionEvent) {
         if (actionEvent.getSource().equals(btnEmpSearch)){
             Wdata.clear();
@@ -552,28 +658,27 @@ public class AdminController implements Initializable {
             }else {
                 buildWorkerData();
             }
-
         }
-
     }
 
+    
+    
+    /**
+     * Metodo para borrar empleados de la tabla y de la base de datos
+     * @param actionEvent 
+     */
     public void onDeleteButton(ActionEvent actionEvent) {
-
         if(actionEvent.getSource().equals(btnEmpDel)){
-
-           /* db.customModQuery("Delete from empleados where id ='"
-                    +tEmpleado.getSelectionModel().getSelectedItem().idProperty().get() +
-                    "';", "No se pudo eliminar al empleado, contacte con un superior", Alert.AlertType.INFORMATION);*/
             new Alert(Alert.AlertType.INFORMATION, "Registro eliminado correctamente").showAndWait();
             buildWorkerData();
         }
 
     }
-
-
    
     
-
+    /**
+     * Metodo para generar los tipos de las celdas y sus property values factory
+     */
     private void cfgColumns(){
         col_id_e.setCellValueFactory(new PropertyValueFactory<>("id"));
         //col_id_e.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -622,6 +727,8 @@ public class AdminController implements Initializable {
         col_prof_emp.setCellValueFactory(new PropertyValueFactory<>("empleado_id"));
        
     }
+
+    
 
     
     

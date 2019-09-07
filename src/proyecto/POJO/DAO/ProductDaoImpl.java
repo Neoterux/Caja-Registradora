@@ -13,15 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import proyecto.Custom.CrudType;
 import proyecto.Custom.CustomAlert;
 import proyecto.Custom.DbgMessage;
 import proyecto.Custom.ExceptionType;
+import proyecto.POJO.ProductModel;
 import proyecto.POJO.Producto;
 
 /**
  *
- * @author user
+ * @author Neoterux
  */
 public class ProductDaoImpl implements ProductDAO{
     
@@ -29,13 +29,14 @@ public class ProductDaoImpl implements ProductDAO{
     private Connection con;
     private PreparedStatement stm;
     private DbgMessage dbg;
-
+    
     
     
     /**
-     * Register a new Product to the database
-     * @param product product to be inserted
-     * @return true if the product was inserted correctly
+     * Registra un nuevo producto en la base de datos
+     * @param product producto que va a ser insertado
+     * @return true-> si se ejecuto con exito
+     *         false-> si se ejecuto con errores
      */
     @Override
     public boolean register(Producto product) {
@@ -43,23 +44,16 @@ public class ProductDaoImpl implements ProductDAO{
         sql = "INSERT INTO bodega values(?,?,?,?)";
         
         try{
-            con = proyecto.BD.Connection.connect(false);
-            
+            con = proyecto.BD.Connector.connect(false);
             stm = con.prepareStatement(sql);
-            
             stm.setString(1, product.getId());
             stm.setString(2, product.getNombre_producto());
             stm.setFloat(3, product.getPrecio());
             stm.setInt(4, product.getCantidad_disponible());
-            System.out.println("[INSERT Class='ProductDaoImple'] rows Affected: " + stm.executeUpdate());
-            //dbg = new DbgMessage(this, CrudType.INSERT, );
-            //dbg.showCrudDbg();
-            
+            System.out.println("[INSERT Class='ProductDaoImple'] rows Affected: " + stm.executeUpdate());            
         }catch(SQLException e){
             dbg = new DbgMessage(ExceptionType.SQLEXCEPTION, this, e.getMessage());
-            
             dbg.showExceptionDbg();
-            
             CustomAlert al = new CustomAlert(Alert.AlertType.INFORMATION, "Prodcuto ya existente", ButtonType.APPLY);
            al.showAndWait();
         }
@@ -70,30 +64,25 @@ public class ProductDaoImpl implements ProductDAO{
     
     
 /**
- * Delete a product from the database
- * @param product producto to be deleted
- * @return true if the product was deleted correctly
+ * Borra un registro de la base de datos
+ * @param product producto que va a ser eliminado
+ * @return true-> si se ejecuto con exito
+ *         false-> si se ejecuto con errores
  */
     @Override
     public boolean delete(Producto product) {
         boolean deleted = false;
         try{
-            con = proyecto.BD.Connection.connect(false);
-            stm = con.prepareStatement("DELETE FROM bodega WHERE id = ?");
-            
-            stm.setString(1, product.getId());
-            
-            dbg = new DbgMessage(this, CrudType.DELETE, stm.executeUpdate());
-            dbg.showCrudDbg();
-            
+            con = proyecto.BD.Connector.connect(false);
+            stm = con.prepareStatement("DELETE FROM bodega WHERE id = ?");            
+            stm.setString(1, product.getId());            
+            System.out.println("[ROWS AFFECTED] : " + stm.executeUpdate());            
             con.close();
-            deleted = true;
-            
+            deleted = true;            
         }catch(SQLException e){
             dbg = new DbgMessage(ExceptionType.SQLEXCEPTION, this, e.getMessage());
             dbg.showExceptionDbg();
-        }
-        
+        }        
         return deleted;
     }
 
@@ -103,23 +92,18 @@ public class ProductDaoImpl implements ProductDAO{
     public boolean update(Producto product) {
         boolean updated = false;
         try{
-            con = proyecto.BD.Connection.connect(false);
-            
-            stm = con.prepareStatement("UPDATE bodega SET nombre_producto=?, precio=?, cantidad_disponible=? WHERE id = ? ");
-            
+            con = proyecto.BD.Connector.connect(false);            
+            stm = con.prepareStatement("UPDATE bodega SET nombre_producto=?, precio=?, cantidad_disponible=? WHERE id = ? ");            
             stm.setString(1, product.getNombre_producto());
             stm.setFloat(2, product.getPrecio());
             stm.setInt(3, product.getCantidad_disponible());
             stm.setString(4, product.getId());
             System.out.println("[UPDATE class='ProductDaoImpl']: " + stm.executeUpdate());
-           
-            
             con.close();
             updated = true;
         }catch(SQLException e){
             dbg = new DbgMessage(ExceptionType.SQLEXCEPTION, this, e.getMessage());
-            dbg.showExceptionDbg();
-            
+            dbg.showExceptionDbg();            
         }
         return updated;
     }
@@ -129,7 +113,7 @@ public class ProductDaoImpl implements ProductDAO{
         ArrayList<Producto> lst = new ArrayList<>();
         
         try{
-            con = proyecto.BD.Connection.connect(false);
+            con = proyecto.BD.Connector.connect(false);
             stm = con.prepareStatement("SELECT * FROM bodega");
             ResultSet rs = stm.executeQuery();
             
@@ -179,7 +163,36 @@ public class ProductDaoImpl implements ProductDAO{
     
     
     private Connection connect(){
-        return proyecto.BD.Connection.connect(false);
+        return proyecto.BD.Connector.connect(false);
+    }
+
+    @Override
+    public List<ProductModel> searchByIDorName(String IDorName) {
+        List<ProductModel> l = new ArrayList<>();
+        sql = "SELECT * FROM bodega WHERE id like ? OR nombre_producto like ?";
+        try{
+            con = proyecto.BD.Connector.connect(false);
+            stm = con.prepareStatement(sql);
+            stm.setString(1, IDorName + "%");
+            stm.setString(2, IDorName + "%");
+            
+            ResultSet rs = stm.executeQuery();
+            
+            while(rs.next()){
+                ProductModel pm = new ProductModel();
+                pm.setId(rs.getString("id"));
+                pm.setNombre_producto("nombre_produco");
+                pm.setPrecio(rs.getFloat("precio"));
+                pm.setCantidad_disponible(rs.getInt("cantidad_disponible"));
+                l.add(pm);
+            }
+            con.close();
+            
+        }catch(SQLException e){
+            
+        }
+        
+        return l;
     }
     
     

@@ -13,7 +13,7 @@ import proyecto.POJO.OrderModel;
 
 /**
  *
- * @author labfe
+ * @author Neoterux
  */
 public class ControllerOrder {
     public void update(Order o){

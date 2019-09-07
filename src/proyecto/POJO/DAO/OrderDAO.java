@@ -12,8 +12,8 @@ import proyecto.POJO.OrderModel;
 
 
 /**
- *
- * @author user
+ *Interfaz para transision de datos con la base de datos
+ * @author Neoterux
  */
 public interface OrderDAO {
     

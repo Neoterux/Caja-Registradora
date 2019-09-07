@@ -19,10 +19,17 @@ import proyecto.Controllers.UserController;
 import proyecto.POJO.Controller.ControllerWorker;
 import proyecto.POJO.Worker;
 
+
+/**
+ * Clase del GUI de login
+ * @author Neoterux
+ */
 public class LogInDialog extends Dialog {
 
     
-
+    /**
+     * Constructor que realiza la magia
+     */
     public LogInDialog( ){
         setTitle("Iniciar Sesion");
         setHeaderText("Bienvenido, inicie sesión por favor ");

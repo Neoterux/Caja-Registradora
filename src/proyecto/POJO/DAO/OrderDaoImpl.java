@@ -15,14 +15,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import proyecto.POJO.Order;
 import proyecto.POJO.OrderModel;
 
 /**
  *
- * @author user
+ * @author Neoterux
  */
 public class OrderDaoImpl implements OrderDAO {
 
@@ -33,7 +31,7 @@ public class OrderDaoImpl implements OrderDAO {
         //"INSERT INTO proforma VALUES (uuid_to_bin(?, true),?,?,?,?,?,?,?)";
         String sql = "INSERT INTO proforma(id, cedula, id_producto, cantidad, precio, total_precio, fecha, empleado_id) VALUES (UNHEX(REPLACE(?, \'-\', \'\')),?,?,?,?,?,?,?)";
         
-        try(Connection conn = proyecto.BD.Connection.connect(false)){
+        try(Connection conn = proyecto.BD.Connector.connect(false)){
                PreparedStatement pst = conn.prepareStatement(sql);
                
                pst.setString(1, order.getId());
@@ -58,7 +56,7 @@ public class OrderDaoImpl implements OrderDAO {
     public boolean delete(Order order) {
         boolean deleted = false;
         String sql = "DELETE FROM proforma WHERE id = cast(? as BINARY(16))";
-        try(Connection con = proyecto.BD.Connection.connect(false)){
+        try(Connection con = proyecto.BD.Connector.connect(false)){
             PreparedStatement pst = con.prepareStatement(sql);
             
             pst.setString(1, order.getId());
@@ -77,7 +75,7 @@ public class OrderDaoImpl implements OrderDAO {
         boolean updated = false;
         //"UPDATE proforma SET cedula = ?, id_producto = ?, cantidad = ?, precio = ?, total_precio = ?, fecha = ?, empleado_id = ?  WHERE id = cast(? as BINARY(16))";
         String sql = "UPDATE proforma SET cedula = ?, id_producto = ?, cantidad = ?, precio = ?, total_precio = ?, fecha = ?, empleado_id = ?  WHERE id = cast(? as BINARY(16))";
-        try(Connection con = proyecto.BD.Connection.connect(false)){
+        try(Connection con = proyecto.BD.Connector.connect(false)){
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, order.getCedula());
             pst.setString(2, order.getId_producto());
@@ -101,7 +99,7 @@ public class OrderDaoImpl implements OrderDAO {
     public List<Order> get() {
         ArrayList<Order> list = new ArrayList<>();
         
-        try(Connection con = proyecto.BD.Connection.connect(false)){
+        try(Connection con = proyecto.BD.Connector.connect(false)){
             
             PreparedStatement stm = con.prepareStatement("SELECT * FROM proforma");
             ResultSet rs = stm.executeQuery();
@@ -132,7 +130,7 @@ public class OrderDaoImpl implements OrderDAO {
         List<OrderModel> l = new ArrayList<>();
         String sql = "SELECT * FROM proforma WHERE id_text = ? OR cedula = ?";
         try{
-            Connection con = proyecto.BD.Connection.connect(false);
+            Connection con = proyecto.BD.Connector.connect(false);
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, IDorCID);
             pst.setString(2, IDorCID);
@@ -163,7 +161,7 @@ public class OrderDaoImpl implements OrderDAO {
         String sql = "SELECT * FROM proforma WHERE fecha BETWEEN ? AND ?";
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try{
-            Connection con = proyecto.BD.Connection.connect(false);
+            Connection con = proyecto.BD.Connector.connect(false);
             PreparedStatement pst = con.prepareStatement(sql);
             try {
                 pst.setTimestamp(1, new Timestamp( df.parse(df.format(first)).getTime() ));

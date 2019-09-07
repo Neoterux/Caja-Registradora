@@ -5,15 +5,14 @@
  */
 package proyecto.POJO;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
- *
- * @author labfe
+ * Modelo de Pedido
+ * @author Neoterux
  */
 public class OrderModel{
     private SimpleStringProperty id = new SimpleStringProperty();
@@ -28,7 +27,10 @@ public class OrderModel{
     
     
     
-    
+    /**
+     * Transformar MODEL a POJO
+     * @return POJO del pedido
+     */
     public Order toOrder(){
         Order o = new Order();
         o.setID(getId());

@@ -10,8 +10,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
- *
- * @author labfe
+ *Clase modelo de proforma
+ * @author Neoterux 
  */
 public class ProformaModel {
     

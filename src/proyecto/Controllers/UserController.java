@@ -37,6 +37,11 @@ import proyecto.POJO.Worker;
 import proyecto.Utils.NodeUtils;
 import proyecto.Utils.RandomUtils;
 
+
+/**
+ * Clase controlador de la interfaz del cajero
+ * @author user
+ */
 public class UserController implements Initializable {
     
     private final float IVA = 0.12f;
@@ -116,10 +121,14 @@ public class UserController implements Initializable {
     
     
     //<FXML ACTIONS>
+    
+    /**
+     * Metodo para añadir productos a la tabla
+     * @param event click event
+     */
     @FXML
     void AddProduct(ActionEvent event) {
         if(NodeUtils.notIsNullOrEmpty(txtCodigo, txtCedula, txtNombre, txtPNombre) && NodeUtils.parseInt(txtCantidad) > 0){
-            
             if(NodeUtils.parseInt(txtCantidad) <= product.getCantidad_disponible()){
                 Producto p = cp.getFromID(txtCodigo.getText().trim());
                 p.setCantidad_disponible(NodeUtils.parseInt(txtCantidad));
@@ -130,9 +139,7 @@ public class UserController implements Initializable {
                 calcOther();
                 NodeUtils.clearAll(txtCodigo, txtCedula, txtNombre, txtPNombre);
                 txtCodigo.requestFocus();
-            }
-            
-            
+            }          
         }else{
             event.consume();
             Alert a = new Alert(Alert.AlertType.ERROR, "Rellene los datos faltantes");
@@ -144,9 +151,12 @@ public class UserController implements Initializable {
                 txtCodigo.requestFocus();
             }
         }
-          
     }
     
+    /**
+     * Metodo para detectar el tab o enter para obtener datos del cliente y/o producto
+     * @param event key event
+     */
     @FXML
     void tabRealeased(KeyEvent event) {
         System.out.println("[EJECUTSNDO TAB RELEASED] " + event.getCode());
@@ -174,6 +184,11 @@ public class UserController implements Initializable {
        
     }//end tabreleased
     
+    
+    /**
+     * Metodo para filtrar la entrada de caracteres a textfield
+     * @param event  key event
+     */
     @FXML
     void keyPressed(KeyEvent event) {
         
@@ -185,7 +200,10 @@ public class UserController implements Initializable {
         }
     }
     
-    
+    /**
+     * Metodo del boton cancelar
+     * @param event 
+     */
     @FXML
     void cancel(ActionEvent event) {
        NodeUtils.clearAll(this.scene.getRoot());
@@ -194,6 +212,10 @@ public class UserController implements Initializable {
        order.setID(RandomUtils.randID());
     }
     
+    /**
+     * Metodo para boton pagar
+     * @param event click event
+     */
     @FXML
     void pay(ActionEvent event) {
         order.setID(RandomUtils.randID());
@@ -213,21 +235,20 @@ public class UserController implements Initializable {
           co.register(o);
       });
       Producto p;
-      //modify product quantity
-      
+      //modify product quantity      
       for(ProductModel pm : tvProductos.getItems()){
           p = cp.getFromID(pm.getId());
           p.setCantidad_disponible(p.getCantidad_disponible() - pm.getCantidad_disponible());
           cp.update(p);
-      }
-      
-      FacturaController fc = new FacturaController(orderList, c, subtotal, iva, total);
-      
-     
+      }      
+      FacturaController fc = new FacturaController(orderList, c, subtotal, iva, total);    
     }
     
     
-    
+    /**
+     * Metodo para boton de cerrar
+     * @param event click event
+     */
     @FXML
     void OnClose(ActionEvent event) {
         Platform.setImplicitExit(true);
@@ -237,12 +258,16 @@ public class UserController implements Initializable {
     
     
     //</FXML ACTIONS>
-    
+    /**
+     * Listas para llenar tablas
+     */
     ObservableList<ProductModel> list;
     List<ProductModel> productsList;
     List<Order> orderList;
     
-    
+    /**
+     * Objetos para la factura
+     */
     Worker current_worker;
     Order order;
     Clients c;
@@ -256,7 +281,11 @@ public class UserController implements Initializable {
     private float subtotal;
     private float iva;
     private Scene scene;
-
+    
+    /**
+     * COnstructor del GUI
+     * @param worker trabajador que esta trabajando
+     */
     public UserController(Worker worker) {
         stage = new Stage();
         date = new Date();
@@ -265,9 +294,7 @@ public class UserController implements Initializable {
         cc = new ControllerClient();
         co = new ControllerOrder();
         productsList = new ArrayList<>();
-        orderList = new ArrayList<>();
-        
-        
+        orderList = new ArrayList<>();               
         try{
             this.current_worker = worker;
             System.out.println("[CONSTRUCTOR USER CONTROLLER]\n"
@@ -275,22 +302,15 @@ public class UserController implements Initializable {
                     + current_worker.toString());
             
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/proyecto/Views/UserView.fxml"));
-            loader.setController(this);
-            
+            loader.setController(this);            
             System.out.println("[LOADER INFO]: " + loader.toString());
-            Parent root = loader.load();
-            
-            
+            Parent root = loader.load();            
             scene = new Scene(root);
             stage.setScene(scene);
             stage.setMaximized(true);
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setTitle("Empleado: " + current_worker.getFullName());
             stage.show();
-            //showWithReturn(current_worker.isAdmin());
-            
-      
-            
         }catch(IOException e){
             e.printStackTrace();
             System.err.println("[Error al cargar Panel de Usuario] "
@@ -299,19 +319,23 @@ public class UserController implements Initializable {
         }
     }
     
+    /**
+     * Constructor para administrador
+     * @param worker
+     * @param stage 
+     */
     public UserController(Worker worker, Stage stage){
         this(worker);
-        
-        
         btnReturn.setOnAction(av->{
             stage.show();
             this.stage.close();
         });
-       
-       
     }
     
-    
+    /**
+     * Metodo ignorado
+     * @return 
+     */
     public boolean showWithReturn(){
         boolean yes =false;
         stage.show();
@@ -321,34 +345,35 @@ public class UserController implements Initializable {
     
     
     
-
+    /**
+     * Metodo de initialize de siempre......
+     * @param location ya sabes que es
+     * @param resources 
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Entrando en Controller User");
         stage.setMinWidth(1000f);
         stage.setMinHeight(600f);
-       btnReturn.setVisible(current_worker.isAdmin());
-      
+       btnReturn.setVisible(current_worker.isAdmin());      
         txtCedula.positionCaret(0);
         Platform.runLater(()->{
-            this.txtCedula.requestFocus();
-        
+            this.txtCedula.requestFocus();        
         });
         txtCantidad.textProperty().addListener((o, ovalue, nvalue)->{
             if(nvalue.matches("\\d*"))return;
             txtCantidad.setText(nvalue.replaceAll("[^\\d]", ""));
-        });
-        
-        NodeUtils.limitTextFieldLength(5, txtCodigo);
-        
+        });        
+        NodeUtils.limitTextFieldLength(5, txtCodigo);        
         NodeUtils.limitTextFieldLength(10, txtCedula);
         list = FXCollections.observableArrayList();
         list.clear();
-        cfgColumns();
-        
+        cfgColumns();        
     }
     
-    
+    /**
+     * Configurar columnas
+     */
     private void cfgColumns(){
         col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_name.setCellValueFactory(new PropertyValueFactory<>("nombre_producto"));
@@ -357,14 +382,17 @@ public class UserController implements Initializable {
         col_tot.setCellValueFactory(new PropertyValueFactory<>("total"));
     }
     
+    /**
+     * Metodo para actualizar tabla
+     */
     private void updateTable(){
-       tvProductos.setItems(list);
-       
-       
+       tvProductos.setItems(list);      
     }
     
-   private void calcOther(){
-       
+    /**
+     * Metodo para calcular otros calores
+     */
+   private void calcOther(){       
        subtotal = tvProductos.getItems().stream().map((pm) -> pm.getTotal()).reduce(subtotal, (accumulator, _item) -> accumulator + _item);
        iva = (float) (Math.round((subtotal*IVA )*100.0) / 100.0);
        total = (float) (Math.round((subtotal + iva)*100.0) / 100.0);

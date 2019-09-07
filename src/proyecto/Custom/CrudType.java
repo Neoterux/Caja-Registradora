@@ -7,7 +7,7 @@ package proyecto.Custom;
 
 /**
  *
- * @author labfe
+ * @author Neoterux
  */
 public enum CrudType {
     

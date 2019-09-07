@@ -11,7 +11,7 @@ import proyecto.POJO.DAO.ClientDaoImpl;
 
 /**
  *
- * @author user
+ * @author Neoterux
  */
 public class ControllerClient {
     

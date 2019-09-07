@@ -5,6 +5,10 @@ import proyecto.POJO.DAO.WorkerDaoImpl;
 import proyecto.POJO.Worker;
 
 import java.util.List;
+/**
+ * 
+ * @author Neoterux
+ */
 
 public class ControllerWorker {
 

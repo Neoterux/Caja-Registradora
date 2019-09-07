@@ -7,6 +7,7 @@ package proyecto.POJO.Controller;
 
 import java.util.List;
 import proyecto.POJO.DAO.ProductDaoImpl;
+import proyecto.POJO.ProductModel;
 import proyecto.POJO.Producto;
 
 /**
@@ -34,4 +35,7 @@ public class ControllerProduct {
         return new ProductDaoImpl().getFromId(id);
     }
     
+    public List<ProductModel> searchByIDorName(String IDorName){
+        return new ProductDaoImpl().searchByIDorName(IDorName);
+    }
 }

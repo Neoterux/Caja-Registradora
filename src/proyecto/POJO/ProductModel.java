@@ -13,8 +13,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TableView;
 
 /**
- *
- * @author labfe
+ *Modelo de producto
+ * @author Neoterux
  */
 public class ProductModel {
     private SimpleStringProperty id = new SimpleStringProperty();
@@ -120,6 +120,10 @@ public class ProductModel {
         return exists;
     }
     
+    /**
+     * Transforma MODEL a POJO
+     * @return POJO del producto
+     */
     public Producto toProduct(){
         Producto p = new Producto();
         

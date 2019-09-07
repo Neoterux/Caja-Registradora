@@ -2,38 +2,43 @@ package proyecto.BD;
 
 
 import javafx.scene.control.Alert;
-import proyecto.Custom.ErrorAlert;
 import java.nio.file.Paths;
 import java.sql.*;
 
 public class DBConnection {
 
     //Database connection paths
+    /**
+     * Objetos necesarios para la conexion a la base de datos
+     */
     private String url ;
     private String user;
     private String password;
 
     //Database objects
+    /**
+     * Objetos necesarios para obtene
+     */
     private DatabaseConfigurations dbconfig;
     private java.sql.Connection conn;
     private Statement statement;
     private ResultSet resultSet;
 
-    public DBConnection(){
+    public DBConnection() {
         dbconfig = new DatabaseConfigurations(Paths.get(".").toAbsolutePath().normalize() + "/settings.json");
         this.url = dbconfig.getDBUri();
         this.user = dbconfig.getUser();
         this.password = dbconfig.getPassword();
 
         try{
-
+            System.out.println(Class.forName("com.mysql.jdbc.Driver"));
             conn = DriverManager.getConnection(url, user, password);
             System.out.println("\n[INFO]: Conexion establecida correctamente\n");
             openStatement();
-        }catch(SQLException e){
+        }catch(SQLException | ClassNotFoundException e){
 
             System.out.println("\n[ERROR] : No se pudo establecer conexion con la base de datos\n");
-            new ErrorAlert(e).showAndWait();
+            
         }
 
     }

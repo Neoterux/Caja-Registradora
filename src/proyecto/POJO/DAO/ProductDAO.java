@@ -6,11 +6,12 @@
 package proyecto.POJO.DAO;
 
 import java.util.List;
+import proyecto.POJO.ProductModel;
 import proyecto.POJO.Producto;
 
 /**
- *
- * @author user
+ * Interfaz para la transision de datos con la base de datos
+ * @author Neoterux
  */
 public interface ProductDAO {
     
@@ -23,5 +24,7 @@ public interface ProductDAO {
     public List<Producto> get();
     
     public Producto getFromId(String id);
+    
+    public List<ProductModel> searchByIDorName(String IDorName);
     
 }

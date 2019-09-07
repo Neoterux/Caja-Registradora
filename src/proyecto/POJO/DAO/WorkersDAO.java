@@ -4,6 +4,10 @@ import proyecto.POJO.Worker;
 
 import java.util.List;
 
+/**
+ * Interfaz de transicion de datos
+ * @author Neoterux
+ */
 public interface WorkersDAO {
 
     public boolean reg(Worker worker);

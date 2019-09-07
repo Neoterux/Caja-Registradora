@@ -6,8 +6,8 @@
 package proyecto.POJO;
 
 /**
- *
- * @author labfe
+ *POJO del producto
+ * @author Neoterux
  */
 public class Producto {
     
@@ -101,6 +101,10 @@ public class Producto {
                 "\n[TOTAL'no param']: " + calcTotal();
     }
     
+    /**
+     * Transforma POJO a MODEL
+     * @return MODEL del producto
+     */
     public ProductModel toModel(){
         ProductModel pm = new ProductModel();
         try{

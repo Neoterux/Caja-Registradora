@@ -35,10 +35,15 @@ import proyecto.POJO.Order;
 import proyecto.POJO.ProformaModel;
 
 /**
- *
- * @author labfe
+ *  Clase controlador para la interfaz factura
+ * @author Neoterux
  */
 public class FacturaController implements Initializable {
+    
+    
+    /**
+     * FXML componentes del GUI
+     */
     
     //FXML
      @FXML
@@ -91,11 +96,21 @@ public class FacturaController implements Initializable {
     @FXML
     private TableColumn<ProformaModel, Float> col_total;
     
+    /**
+     * COnstantes para la construccion del codigo de barra
+     */
+    private final int BARCODE_WIDTH = 400;
+    private final int BARCODE_HEIGHT = 120;
     
-    private int BARCODE_WIDTH = 400;
-    private int BARCODE_HEIGHT = 120;
+    /**
+     * Objetos para la visualizacion de la interfaz
+     */
     private Stage stage;
     private Scene scene;
+    
+    /**
+     * Objetos para calcular cosas de la factura
+     */
     private String proformaCode;
     private ObservableList<ProformaModel> list;
     private List<Order> orders;
@@ -105,6 +120,14 @@ public class FacturaController implements Initializable {
     private float total;
     
     
+    /**
+     * Constructor que genera la interfaz grafica de la factura
+     * @param orders lista de las ordenes que se listaran en la factura
+     * @param client cliente que efectuo la compra  
+     * @param subtotal subtotal de la compra
+     * @param iva iva de la compra
+     * @param total subtotal + iva
+     */
     public FacturaController( List<Order> orders, Clients client, float subtotal, float iva, float total){
         stage = new Stage();
         proformaCode = orders.get(0).getId();
@@ -132,7 +155,13 @@ public class FacturaController implements Initializable {
         }
         
     }
-
+    
+    
+/**
+ * Metodo de autoinicializaccion del controlador
+ * @param location localizacion del FXML
+ * @param resources ??
+ */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         
@@ -162,6 +191,9 @@ public class FacturaController implements Initializable {
         
     }
     
+    /**
+     * Metodo para configurar los valores que recibiran la tablas
+     */
     private void cfgColumn(){
         col_cantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         col_precio.setCellValueFactory(new PropertyValueFactory<>("precio"));
@@ -169,12 +201,12 @@ public class FacturaController implements Initializable {
         col_total.setCellValueFactory(new PropertyValueFactory<>("total"));
     }
     
-    
+    /**
+     * Metodo para generar el codigo de barra
+     */
     private void generateQR(){
-        try{
-            
+        try{            
             Code39Writer c39Writter = new Code39Writer();
-            //BitMatrix bmatrix = qrWritter.encode(UUIDUtils.asBytes(UUID.fromString(proformaCode)), BarcodeFormat.CODABAR, BARCODE_WIDTH, BARCODE_HEIGHT);
             BitMatrix bmatrix;
             bmatrix = c39Writter.encode(proformaCode, BarcodeFormat.CODE_39, BARCODE_WIDTH, BARCODE_HEIGHT);
             

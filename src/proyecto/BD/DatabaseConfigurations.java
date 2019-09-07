@@ -3,7 +3,6 @@ package proyecto.BD;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import proyecto.Custom.ErrorAlert;
 import proyecto.Utils.FileUtils;
 
 import java.io.File;
@@ -20,6 +19,16 @@ public class DatabaseConfigurations {
     private String password;
     private String other;
 
+    
+    /**
+     * Metodo constructor
+     * @param ip
+     * @param protocol
+     * @param port
+     * @param db_name
+     * @param user
+     * @param password 
+     */
     public DatabaseConfigurations( String ip, String protocol, String port, String db_name, String user, String password){
         this.ip = ip;
         this.protocol = protocol;
@@ -29,6 +38,11 @@ public class DatabaseConfigurations {
         this.password = password;
     }
 
+    /**
+     * Metodo Constructor
+     * @param pathToJson Direccion al fichero de configuracion .json
+     *        si el archivo de configuracion no existe se crea uno nuevo
+     */
     public DatabaseConfigurations(String pathToJson){
         try {
             JsonObject json = new JsonParser().parse(FileUtils.readAll(pathToJson)).getAsJsonObject();
@@ -45,7 +59,7 @@ public class DatabaseConfigurations {
 
             this.password = json.getAsJsonObject("database-config").get("password").getAsString();
         }catch (IllegalStateException e){
-            new ErrorAlert(e).showAndWait();
+           // new ErrorAlert(e).showAndWait();
             System.out.println(pathToJson);
             System.out.println("\n[CREANDO ARCHIVO SETTINGS PROVISIONAL]\n");
 

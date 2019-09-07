@@ -5,11 +5,9 @@
  */
 package proyecto.Custom;
 
-import java.sql.SQLException;
-
 /**
  *
- * @author labfe
+ * @author Neoterux
  */
 public class DbgMessage {
     

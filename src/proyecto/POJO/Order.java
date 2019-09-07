@@ -10,7 +10,7 @@ import java.util.Date;
 
 
 /**
- *
+ * POJO de pedidos
  * @author labfe
  */
 public class Order {
@@ -153,6 +153,10 @@ public class Order {
         return o;
     }
     
+    /**
+     * Transformar a proforma
+     * @return el Modelo de proforma
+     */
     public ProformaModel toProforma(){
         ProformaModel pf = new ProformaModel();
         

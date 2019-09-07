@@ -5,15 +5,17 @@
  */
 package proyecto.POJO;
 
-import com.sun.org.apache.xpath.internal.operations.Equals;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
- *
- * @author user
+ *  Modelo de Cliente
+ * @author Neoterux
  */
 public class ClientsModel {
     
+    /**
+     * MODEL Info
+     */
     private SimpleStringProperty cedula;
     private SimpleStringProperty nombre;
     private SimpleStringProperty apellido;
@@ -117,7 +119,10 @@ public class ClientsModel {
         this.email.set(email);
     }
     
-    
+    /**
+     * convertir a POJO
+     * @return POJO de clientes
+     */
     public Clients toClient(){
         Clients c = new Clients();
         c.setCedula(cedula.get());

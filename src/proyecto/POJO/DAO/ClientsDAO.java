@@ -3,6 +3,10 @@ package proyecto.POJO.DAO;
 import java.util.List;
 import proyecto.POJO.Clients;
 
+/**
+ * Interfaz para la conexion con la base de datos
+ * @author Neoterux
+ */
 public interface ClientsDAO {
     
     public boolean register(Clients client);
