@@ -9,11 +9,14 @@ import java.util.UUID;
 
 /**
  *
- * @author labfe
+ * @author Neoterux
  */
 public class RandomUtils {
     
-    
+    /**
+     * Genera un UUID random 
+     * @return String del UUID randomS
+     */
     public static String randID(){
         String x = "";
         UUID id = UUID.randomUUID();

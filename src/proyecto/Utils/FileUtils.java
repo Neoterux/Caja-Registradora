@@ -5,15 +5,23 @@ package proyecto.Utils;
 
 import javafx.scene.control.Alert;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * 
+ * @author Neoterux
+ */
 public class FileUtils {
-
+    
+    /**
+     * Lee todo el archivo de configuracion json
+     * @param path ruta al archivo de configuracion
+     * @return String del archivo json
+     */
     public static String readAll(String path){
         StringBuilder content = new StringBuilder();
         try {

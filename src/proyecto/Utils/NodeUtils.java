@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 
 public class NodeUtils {
 
+   
     public static boolean isNullOrEmpty(TextField ...textFields){
         boolean bl = true;
         try{
