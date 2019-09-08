@@ -244,7 +244,7 @@ public class UserController implements Initializable {
       FacturaController fc = new FacturaController(orderList, c, subtotal, iva, total);    
     }
     
-    
+   
     /**
      * Metodo para boton de cerrar
      * @param event click event
