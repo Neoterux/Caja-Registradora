@@ -442,7 +442,7 @@
                                              <bottom>
                                                 <HBox minHeight="30.0" spacing="10.0" BorderPane.alignment="CENTER">
                                                    <children>
-                                                      <Button id="delbutton" mnemonicParsing="false" text="Borrar" />
+                                                      <Button id="delbutton" fx:id="btnProdDel" mnemonicParsing="false" onAction="#onDeleteButton" text="Borrar" />
                                                     <Button id="modbutton" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#onProductMod" text="Modificar" />
                                                    </children>
                                                 </HBox>

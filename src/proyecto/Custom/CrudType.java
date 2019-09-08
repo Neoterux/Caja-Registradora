@@ -11,8 +11,19 @@ package proyecto.Custom;
  */
 public enum CrudType {
     
+    /**
+     *
+     */
     UPDATE,
+
+    /**
+     *
+     */
     DELETE,
+
+    /**
+     *
+     */
     INSERT;
             
     

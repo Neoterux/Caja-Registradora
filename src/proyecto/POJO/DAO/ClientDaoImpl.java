@@ -11,13 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import org.apache.log4j.Logger;
-import proyecto.Custom.CrudType;
-import proyecto.Custom.CustomAlert;
+import proyecto.BD.Connector;
 import proyecto.Custom.DbgMessage;
-import proyecto.Custom.ExceptionType;
 import proyecto.POJO.Clients;
 
 /**
@@ -29,6 +25,10 @@ public class ClientDaoImpl implements ClientsDAO{
     private final boolean DEBUG = false;
     private DbgMessage dbg;
     private final Logger log = Logger.getLogger(getClass().getName());
+    
+    private String sql;
+    private Connection con;
+    private PreparedStatement stm;
 
     
     /**
@@ -41,16 +41,18 @@ public class ClientDaoImpl implements ClientsDAO{
     public boolean register(Clients client) {
         boolean registered = false;
         log.info("Insertando datos de Clientes");
-        String sql = "INSERT IGNORE INTO clientes values(?,?,?,?,?,?)";
-        try(Connection con = proyecto.BD.Connector.connect(DEBUG);){
-            PreparedStatement pstm = con.prepareStatement(sql);
-            pstm.setString(1, client.getCedula());
-            pstm.setString(2, client.getNombre());
-            pstm.setString(3, client.getApellido());
-            pstm.setString(4, client.getTelefono());
-            pstm.setString(5, client.getDireccion());
-            pstm.setString(6, client.getEmail());
-            pstm.executeUpdate();
+        sql = "INSERT IGNORE INTO clientes values(?,?,?,?,?,?)";
+        try{
+            con = Connector.connect(DEBUG);
+        
+            stm = con.prepareStatement(sql);
+            stm.setString(1, client.getCedula());
+            stm.setString(2, client.getNombre());
+            stm.setString(3, client.getApellido());
+            stm.setString(4, client.getTelefono());
+            stm.setString(5, client.getDireccion());
+            stm.setString(6, client.getEmail());
+            stm.executeUpdate();
             con.close();
             registered = true;
         }catch(SQLException e){
@@ -67,11 +69,12 @@ public class ClientDaoImpl implements ClientsDAO{
     public List<Clients> get() {
         log.info("Obteniendo datos de clientes");
         boolean registered = false;
-        String sql = "SELECT * FROM clientes";
+        sql = "SELECT * FROM clientes";
         List<Clients> list = new ArrayList();
-        try(Connection con = proyecto.BD.Connector.connect(DEBUG)){           
-            PreparedStatement pstm = con.prepareStatement(sql);            
-            ResultSet rs = pstm.executeQuery();          
+        try{
+            con = Connector.connect(DEBUG);        
+            stm = con.prepareStatement(sql);            
+            ResultSet rs = stm.executeQuery();          
             while(rs.next()){
                 Clients c = new Clients();
                 c.setCedula(rs.getString("cedula"));
@@ -101,10 +104,11 @@ public class ClientDaoImpl implements ClientsDAO{
     public boolean update(Clients client) {
         log.info("Actualizando datos de cliente");
        boolean updated = false;
-        String sql = "UPDATE clientes SET cedula=?, nombre=?, apellido=?, direccion=?, telefono=?, email=? WHERE cedula=? OR email=?";
-        try (Connection conn = proyecto.BD.Connector.connect(DEBUG)){
+        sql = "UPDATE clientes SET cedula=?, nombre=?, apellido=?, direccion=?, telefono=?, email=? WHERE cedula=? OR email=?";
+        try {
+             con = Connector.connect(DEBUG);
             
-            PreparedStatement stm = conn.prepareStatement(sql);
+            stm = con.prepareStatement(sql);
             stm.setString(1, client.getCedula());
             stm.setString(2, client.getNombre());
             stm.setString(3, client.getApellido());
@@ -113,8 +117,8 @@ public class ClientDaoImpl implements ClientsDAO{
             stm.setString(6, client.getEmail());
             stm.setString(7, client.getCedula());
             stm.setString(8, client.getEmail());
-            System.out.println("[ROWS AFFECTED]: " + stm.executeUpdate());
-            conn.close();
+            stm.executeUpdate();
+            con.close();
             updated = true;
 
         }catch (SQLException  e){
@@ -133,12 +137,14 @@ public class ClientDaoImpl implements ClientsDAO{
     public boolean delete(Clients client) {
         log.info("Borrando cliente...");
         boolean deleted = false;        
-        String sql = "DELETE FROM clientes WHERE cedula = ?";
-        try(Connection con = proyecto.BD.Connector.connect(DEBUG)){
-            PreparedStatement stm = con.prepareStatement(sql);
+        sql = "DELETE FROM clientes WHERE cedula = ?";
+        try{
+            con = Connector.connect(DEBUG);
+                
+            stm = con.prepareStatement(sql);
             stm.setString(1, client.getCedula());
-            dbg = new DbgMessage(this, CrudType.DELETE, stm.executeUpdate());
-            dbg.showCrudDbg();
+            stm.executeUpdate();
+            
             deleted = true;
             con.close();
         }catch(SQLException e){
@@ -155,12 +161,13 @@ public class ClientDaoImpl implements ClientsDAO{
     @Override
     public Clients getFromCedula(String cedula) {
         log.info("Buscando cliente con C.I ::" + cedula);
-        String sql = "SELECT * FROM clientes WHERE cedula=?";
+        sql = "SELECT * FROM clientes WHERE cedula=?";
         Clients c = new Clients();
-        try(Connection con = proyecto.BD.Connector.connect(DEBUG)){           
-            PreparedStatement pstm = con.prepareStatement(sql);
-            pstm.setString(1, cedula);            
-            ResultSet rs = pstm.executeQuery();
+        try{
+            con = proyecto.BD.Connector.connect(DEBUG);
+            stm = con.prepareStatement(sql);
+            stm.setString(1, cedula);            
+            ResultSet rs = stm.executeQuery();
             while(rs.next()){                
                 c.setCedula(rs.getString("cedula"));
                 c.setNombre(rs.getString("nombre"));
@@ -185,13 +192,14 @@ public class ClientDaoImpl implements ClientsDAO{
     public List<Clients> search(String identifier) {
         log.info("Buscando a cliente por nombre o cedula");
         List<Clients> l = new ArrayList<>();
-        String sql = "SELECT * FROM clientes WHERE cedula LIKE ? OR nombre LIKE ?";
+        sql = "SELECT * FROM clientes WHERE cedula LIKE ? OR nombre LIKE ?";
         
-        try(Connection con = proyecto.BD.Connector.connect(DEBUG)){
-            PreparedStatement pstm = con.prepareStatement(sql);
-            pstm.setString(1, identifier + "%");
-            pstm.setString(2, identifier + "%");
-            ResultSet rs = pstm.executeQuery();
+        try{
+            con = Connector.connect(DEBUG);
+            stm = con.prepareStatement(sql);
+            stm.setString(1, identifier + "%");
+            stm.setString(2, identifier + "%");
+            ResultSet rs = stm.executeQuery();
             while(rs.next()){
                 Clients c = new Clients();
                 c.setCedula(rs.getString("cedula"));

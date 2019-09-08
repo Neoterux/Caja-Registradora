@@ -78,6 +78,9 @@ public class AdminController  implements Initializable, Runnable {
 
     @FXML
     private TableView<WorkerModel> tEmpleado;
+    
+    @FXML
+    private Button btnProdDel;
 
     @FXML
     private TableColumn<WorkerModel, String> col_id_e;
@@ -387,6 +390,7 @@ public class AdminController  implements Initializable, Runnable {
           logger.info("Registrando Producto");
           buildProductData();
           succesfullDataAlert.showAndWait();
+          NodeUtils.clearAll(txtProductID, txtProductName, txtProductCuant, txtProductPrice);
       }else{
           
           emptyTextFieldAlert.showAndWait();
@@ -482,11 +486,12 @@ public class AdminController  implements Initializable, Runnable {
             cli.setDireccion(txtCliDir.getText().trim());
             cli.setEmail(txtCliEmail.getText().trim());
             cli.setNombre(txtCliNombre.getText().trim());
-            cli.setTelefono(txtCliNombre.getText().trim());
+            cli.setTelefono(txtCliTelf.getText().trim());
             logger.info("Registrando Cliente");
             cc.register(cli);
             buildClientData();
             succesfullDataAlert.showAndWait();
+            NodeUtils.clearAll(txtCliCedula, txtCliApellido, txtCliNombre, txtCliEmail, txtCliTelf, txtCliDir);
         }else{
             emptyTextFieldAlert.showAndWait();
         }
@@ -672,8 +677,17 @@ public class AdminController  implements Initializable, Runnable {
      */
     public void onDeleteButton(ActionEvent actionEvent) {
         if(actionEvent.getSource().equals(btnEmpDel)){
-            new Alert(Alert.AlertType.INFORMATION, "Registro eliminado correctamente").showAndWait();
+            cw.delete(tEmpleado.getSelectionModel().getSelectedItem().toWorker());
+            
             buildWorkerData();
+        }
+        if (actionEvent.getSource().equals(btnCliDel)){
+            cc.delete(tClientes.getSelectionModel().getSelectedItem().toClient());
+            buildClientData();
+        }
+        if(actionEvent.getSource().equals(btnProdDel)){
+            cp.delete(tvProduct.getSelectionModel().getSelectedItem().toProduct());
+            buildPedidoData();
         }
 
     }

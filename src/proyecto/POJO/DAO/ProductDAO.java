@@ -15,16 +15,45 @@ import proyecto.POJO.Producto;
  */
 public interface ProductDAO {
     
+    /**
+     *
+     * @param product
+     * @return
+     */
     public boolean register(Producto product);
     
+    /**
+     *
+     * @param product
+     * @return
+     */
     public boolean delete (Producto product);
     
+    /**
+     *
+     * @param product
+     * @return
+     */
     public boolean update (Producto product);
     
+    /**
+     *
+     * @return
+     */
     public List<Producto> get();
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Producto getFromId(String id);
     
+    /**
+     *
+     * @param IDorName
+     * @return
+     */
     public List<ProductModel> searchByIDorName(String IDorName);
     
 }

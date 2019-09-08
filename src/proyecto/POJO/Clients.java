@@ -101,6 +101,10 @@ public class Clients {
         this.email = email;
     }
     
+    /**
+     *
+     * @return
+     */
     public String getFullName(){
         return (nombre == null && nombre.isEmpty() && apellido == null && apellido.isEmpty())?"":this.nombre + " " + this.apellido;
     }

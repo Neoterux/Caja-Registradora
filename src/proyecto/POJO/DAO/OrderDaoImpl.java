@@ -31,6 +31,12 @@ public class OrderDaoImpl implements OrderDAO {
     private Connection conn;
     private String sql;
     private PreparedStatement pst;
+
+    /**
+     *
+     * @param order
+     * @return
+     */
     @Override
     public boolean register(Order order) {
         boolean registered = false;
@@ -60,6 +66,11 @@ public class OrderDaoImpl implements OrderDAO {
         return registered;
     }
 
+    /**
+     *
+     * @param order
+     * @return
+     */
     @Override
     public boolean delete(Order order) {
         boolean deleted = false;
@@ -79,6 +90,11 @@ public class OrderDaoImpl implements OrderDAO {
         return deleted;
     }
 
+    /**
+     *
+     * @param order
+     * @return
+     */
     @Override
     public boolean update(Order order) {
         boolean updated = false;
@@ -105,6 +121,10 @@ public class OrderDaoImpl implements OrderDAO {
         return updated;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public List<Order> get() {
         log.info("Obteniendo todas las facturas");
@@ -135,6 +155,11 @@ public class OrderDaoImpl implements OrderDAO {
         return list;
     }
 
+    /**
+     *
+     * @param IDorCID
+     * @return
+     */
     @Override
     public List<OrderModel> searchByIdOrCID(String IDorCID) {
         log.info("Obteniendo facturas por ID o Cedula");
@@ -168,6 +193,12 @@ public class OrderDaoImpl implements OrderDAO {
         return l;
     }
 
+    /**
+     *
+     * @param first
+     * @param end
+     * @return
+     */
     @Override
     public List<OrderModel> searchByDate(Date first, Date end) {
         log.info("Obteniendo facturas por fecha");

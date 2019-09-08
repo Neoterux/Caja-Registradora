@@ -9,13 +9,45 @@ import proyecto.POJO.Clients;
  */
 public interface ClientsDAO {
     
+    /**
+     *
+     * @param client
+     * @return
+     */
     public boolean register(Clients client);
+
+    /**
+     *
+     * @return
+     */
     public List<Clients> get();
+
+    /**
+     *
+     * @param client
+     * @return
+     */
     public boolean update(Clients client);
+
+    /**
+     *
+     * @param client
+     * @return
+     */
     public boolean delete(Clients client);
     
+    /**
+     *
+     * @param cedula
+     * @return
+     */
     public Clients getFromCedula(String cedula);
     
+    /**
+     *
+     * @param identifier
+     * @return
+     */
     public List<Clients> search(String identifier);
     
     

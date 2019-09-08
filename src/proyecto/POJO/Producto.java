@@ -60,6 +60,10 @@ public class Producto {
         this.precio = precio;
     }
     
+    /**
+     *
+     * @return
+     */
     public String getPrecioIntText(){
         return (this.precio == 0.0)? "":String.valueOf(this.precio);
     }
@@ -78,16 +82,27 @@ public class Producto {
         this.cantidad_disponible = cantidad_disponible;
     }
     
-    
+    /**
+     *
+     * @return
+     */
     public boolean isEmpty(){
         return this.id == "" && this.nombre_producto == "" && this.precio != 0.0 && this.cantidad_disponible != 0;
     }
     
+    /**
+     *
+     * @return
+     */
     public float calcTotal(){
         
         return this.precio*this.cantidad_disponible;
     }
     
+    /**
+     *
+     * @param cantidad
+     */
     public void calcCantidad(int cantidad){
         this.cantidad_disponible -= cantidad;
     }

@@ -11,8 +11,19 @@ package proyecto.Custom;
  */
 public enum ExceptionType {
     
+    /**
+     *
+     */
     SQLEXCEPTION,
-        EXCEPTION,
-        NULLPOINTEREXCEPTION;
+
+    /**
+     *
+     */
+    EXCEPTION,
+
+    /**
+     *
+     */
+    NULLPOINTEREXCEPTION;
     
 }

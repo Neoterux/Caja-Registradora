@@ -43,7 +43,7 @@ public class ProductDaoImpl implements ProductDAO{
         sql = "INSERT INTO bodega values(?,?,?,?)";
         
         try{
-            con = proyecto.BD.Connector.connect(false);
+            con = Connector.connect(false);
             stm = con.prepareStatement(sql);
             stm.setString(1, product.getId());
             stm.setString(2, product.getNombre_producto());
@@ -83,8 +83,11 @@ public class ProductDaoImpl implements ProductDAO{
         return deleted;
     }
 
-    
-    
+    /**
+     *
+     * @param product
+     * @return
+     */
     @Override
     public boolean update(Producto product) {
         boolean updated = false;
@@ -106,6 +109,10 @@ public class ProductDaoImpl implements ProductDAO{
         return updated;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public List<Producto> get() {
         ArrayList<Producto> lst = new ArrayList<>();
@@ -122,7 +129,6 @@ public class ProductDaoImpl implements ProductDAO{
                 pd.setPrecio(rs.getFloat("precio"));
                 pd.setCantidad_disponible(rs.getInt("cantidad_disponible"));
                 lst.add(pd);
-                System.out.println(pd.toString());
             }
             logger.info("Ejecutando GetAll en tabla Producto");    
            con.close();
@@ -134,6 +140,11 @@ public class ProductDaoImpl implements ProductDAO{
         return lst;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public Producto getFromId(String id) {
         sql = "SELECT * FROM bodega WHERE id=?";
@@ -157,7 +168,11 @@ public class ProductDaoImpl implements ProductDAO{
         return p;
     }
     
-
+    /**
+     *
+     * @param IDorName
+     * @return
+     */
     @Override
     public List<ProductModel> searchByIDorName(String IDorName) {
         List<ProductModel> l = new ArrayList<>();

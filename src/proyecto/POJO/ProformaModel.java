@@ -20,6 +20,9 @@ public class ProformaModel {
     private SimpleFloatProperty precio;
     private SimpleFloatProperty total;
 
+    /**
+     *
+     */
     public ProformaModel() {
         cantidad = new SimpleIntegerProperty();
         producto = new SimpleStringProperty();

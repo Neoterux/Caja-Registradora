@@ -25,12 +25,18 @@ public class Order {
     private String empleado_id;
     private String product_name;
     
-    
-    
+    /**
+     *
+     * @return
+     */
     public String getId(){
         return id;
     }
     
+    /**
+     *
+     * @param id
+     */
     public void setID(String id){
         this.id = id;
     }
@@ -135,11 +141,17 @@ public class Order {
         this.empleado_id = empleado_id;
     }
     
-    
+    /**
+     *
+     */
     public void updateTotal(){
         this.total_precio = this.cantidad * this.precio;
     }
     
+    /**
+     *
+     * @return
+     */
     public OrderModel toModel(){
         OrderModel o = new OrderModel();
         o.setId(id);

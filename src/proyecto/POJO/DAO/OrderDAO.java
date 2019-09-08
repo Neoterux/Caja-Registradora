@@ -17,16 +17,46 @@ import proyecto.POJO.OrderModel;
  */
 public interface OrderDAO {
     
+    /**
+     *
+     * @param order
+     * @return
+     */
     public boolean register(Order order);
     
+    /**
+     *
+     * @param order
+     * @return
+     */
     public boolean delete (Order order);
     
+    /**
+     *
+     * @param order
+     * @return
+     */
     public boolean update (Order order);
     
+    /**
+     *
+     * @return
+     */
     public List<Order> get();
     
+    /**
+     *
+     * @param IDorCID
+     * @return
+     */
     public List<OrderModel> searchByIdOrCID(String IDorCID);
     
+    /**
+     *
+     * @param first
+     * @param end
+     * @return
+     */
     public List<OrderModel> searchByDate(Date first, Date end);
     
 }

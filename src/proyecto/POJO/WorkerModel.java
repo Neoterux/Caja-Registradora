@@ -27,6 +27,19 @@ public class WorkerModel  implements Serializable {
  * Constructor de la clase
  */
     public WorkerModel(){}
+
+    /**
+     *
+     * @param id
+     * @param nombre
+     * @param apellido
+     * @param cedula
+     * @param estado_civil
+     * @param direccion
+     * @param email
+     * @param pass
+     * @param isAdmin
+     */
     public WorkerModel(String id, String nombre, String apellido, String cedula, String estado_civil, String direccion, String email, String pass, boolean isAdmin){
         this.id.set(id);
         this.nombre.set(nombre);
@@ -121,8 +134,16 @@ public class WorkerModel  implements Serializable {
      */
     public SimpleStringProperty estado_civilProperty(){return estado_civil;}
 
+    /**
+     *
+     * @return
+     */
     public SimpleStringProperty direccionProperty(){return direccion;}
 
+    /**
+     *
+     * @return
+     */
     public Worker toWorker(){
         Worker worker = new Worker();
         worker.setId(this.id.get());

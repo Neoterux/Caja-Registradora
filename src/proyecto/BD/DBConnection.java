@@ -5,6 +5,10 @@ import javafx.scene.control.Alert;
 import java.nio.file.Paths;
 import java.sql.*;
 
+/**
+ *
+ * @author labfe
+ */
 public class DBConnection {
 
     //Database connection paths
@@ -24,6 +28,9 @@ public class DBConnection {
     private Statement statement;
     private ResultSet resultSet;
 
+    /**
+     * Constructor por defecto
+     */
     public DBConnection() {
         dbconfig = new DatabaseConfigurations(Paths.get(".").toAbsolutePath().normalize() + "/settings.json");
         this.url = dbconfig.getDBUri();
@@ -87,6 +94,7 @@ public class DBConnection {
      * @param SQLQuery SQL query to execute
      * @param Message Message will be displayed in alert
      * @param type Type alert to display
+     * @return 
      */
 
     public ResultSet customExecute(String SQLQuery, String Message, Alert.AlertType type){
@@ -127,6 +135,8 @@ public class DBConnection {
     /**
      * El siguiente metodo permite ejecutar querys que requieran modificar o eliminar registros
      * @param SQLQuery : Sentencia SQL a ejecutar
+     * @param message
+     * @param type
      *
      */
     public void customModQuery(String SQLQuery, String message, Alert.AlertType type){
@@ -194,12 +204,18 @@ public class DBConnection {
         }
     }
 
+    /**
+     *
+     */
     public void reOpenStatement(){
         System.out.println("\n[DEBUG]: EJECUTANDO REOPEN STATEMENT");
         closeStatement();
         connect();
     }
 
+    /**
+     *
+     */
     public void closeStatement(){
         System.out.println("\n[DEBUG]: EJECUTANDO CLOSE STATEMENT");
         try{
@@ -213,6 +229,9 @@ public class DBConnection {
 
     }
 
+    /**
+     *
+     */
     public void closeConnection(){
         System.out.println("\n[DEBUG]: EJECUTANDO CLOSE CONNECTION");
         try {

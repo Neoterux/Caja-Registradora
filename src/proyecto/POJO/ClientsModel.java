@@ -23,6 +23,9 @@ public class ClientsModel {
     private SimpleStringProperty direccion;
     private SimpleStringProperty email;
 
+    /**
+     *
+     */
     public ClientsModel() {
         
         cedula = new SimpleStringProperty();

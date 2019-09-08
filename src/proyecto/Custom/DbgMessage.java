@@ -18,12 +18,24 @@ public class DbgMessage {
     private CrudType crudType;
     private int rowsAffected;
 
+    /**
+     *
+     * @param type
+     * @param className
+     * @param exceptionMessage
+     */
     public DbgMessage(ExceptionType type, Object className, String exceptionMessage) {
         this.type = type;
         this.className = className.getClass().getName();
         this.exceptionMessage = exceptionMessage;
     }
     
+    /**
+     *
+     * @param className
+     * @param type
+     * @param rowsAffected
+     */
     public DbgMessage(Object className, CrudType type, int rowsAffected){
         this.className = this.className.getClass().getName();
         this.crudType = type;
@@ -31,6 +43,9 @@ public class DbgMessage {
         
     }
     
+    /**
+     *
+     */
     public void showExceptionDbg(){
         
         System.out.println("["+type.toString()+"]\n"
@@ -39,6 +54,9 @@ public class DbgMessage {
        
     }
     
+    /**
+     *
+     */
     public void showCrudDbg(){
         System.out.println("["+crudType.toString()+"]\n"
                 + "[ClassName]: "+className+

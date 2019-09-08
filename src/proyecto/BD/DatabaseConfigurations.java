@@ -10,6 +10,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+/**
+ *
+ * @author Neoterux
+ */
 public class DatabaseConfigurations {
     private String ip;
     private String protocol = "3306";
@@ -22,12 +26,12 @@ public class DatabaseConfigurations {
     
     /**
      * Metodo constructor
-     * @param ip
-     * @param protocol
-     * @param port
-     * @param db_name
-     * @param user
-     * @param password 
+     * @param ip ip de la conexion
+     * @param protocol protocolo de conexion
+     * @param port puerto de conexion
+     * @param db_name nombre de la base de datos a conectar
+     * @param user usuario para conexion a base de datos
+     * @param password contraseña para conexion a base de datos
      */
     public DatabaseConfigurations( String ip, String protocol, String port, String db_name, String user, String password){
         this.ip = ip;
@@ -86,14 +90,26 @@ public class DatabaseConfigurations {
 
     }
 
+    /**
+     * Metodo para obterner la Uri completa para la conexion a la base de datos
+     * @return La Uri de conexion
+     */
     public String getDBUri(){
         return "jdbc:" + protocol + "://" + ip + ":" + port + "/" + db_name;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getUser() {
         return user;
     }
 
+    /**
+     *  Obtiene la contraseña del archivo JSON
+     * @return contraseña
+     */
     public String getPassword() {
         return password;
     }

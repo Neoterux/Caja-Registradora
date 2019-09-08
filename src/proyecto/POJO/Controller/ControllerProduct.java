@@ -15,26 +15,53 @@ import proyecto.POJO.Producto;
  * @author labfe
  */
 public class ControllerProduct {
+
+    /**
+     *
+     * @param p
+     */
     public void update(Producto p){
         new ProductDaoImpl().update(p);
     }
     
+    /**
+     *
+     * @param p
+     */
     public void delete(Producto p){
         new ProductDaoImpl().delete(p);
     }
     
+    /**
+     *
+     * @return
+     */
     public List<Producto> list(){
         return new ProductDaoImpl().get();
     }
     
+    /**
+     *
+     * @param p
+     */
     public void register(Producto p){
         new ProductDaoImpl().register(p);
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Producto getFromID(String id){
         return new ProductDaoImpl().getFromId(id);
     }
     
+    /**
+     *
+     * @param IDorName
+     * @return
+     */
     public List<ProductModel> searchByIDorName(String IDorName){
         return new ProductDaoImpl().searchByIDorName(IDorName);
     }

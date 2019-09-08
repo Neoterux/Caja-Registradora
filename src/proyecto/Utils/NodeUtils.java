@@ -10,9 +10,17 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
+/**
+ *
+ * @author labfe
+ */
 public class NodeUtils {
 
-   
+    /**
+     *
+     * @param textFields
+     * @return
+     */
     public static boolean isNullOrEmpty(TextField ...textFields){
         boolean bl = true;
         try{
@@ -23,18 +31,33 @@ public class NodeUtils {
         return bl;
     }
 
+    /**
+     *
+     * @param textFields
+     * @return
+     */
     public static boolean notIsNullOrEmpty(TextField ...textFields){
 
         return !isNullOrEmpty(textFields);
     }
+    
+    
 
+    /**
+     *
+     * @param target
+     * @param Items
+     */
     public static void addItemsToComboBox(ComboBox target, Object...Items){
-        for (Object item: Items){
-            target.getItems().add(item);
-        }
+        target.getItems().addAll(Arrays.asList(Items));
         
     }
 
+    /**
+     *
+     * @param maxLength
+     * @param textFields
+     */
     public static void limitTextFieldLength(int maxLength, TextField...textFields){
         for(TextField textField:textFields){
             textField.lengthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
@@ -47,6 +70,11 @@ public class NodeUtils {
         }
     }
     
+    /**
+     *
+     * @param textfield
+     * @return
+     */
     public static int parseInt(TextField textfield){
         try{
             return Integer.parseInt(textfield.getText().trim());
@@ -56,6 +84,10 @@ public class NodeUtils {
         return 0;
     }
     
+    /**
+     *
+     * @param textfields
+     */
     public static void clearAll(TextField ... textfields){
         List<TextField> lst = Arrays.asList(textfields);
         lst.forEach(it->{
@@ -64,6 +96,10 @@ public class NodeUtils {
         
     }
     
+    /**
+     *
+     * @param root
+     */
     public static void clearAll(Parent root){
         
         root.getChildrenUnmodifiable().forEach(it->{
@@ -81,6 +117,11 @@ public class NodeUtils {
         
     }
     
+    /**
+     *
+     * @param table
+     * @param data
+     */
     public static void setTableHeightByRowCount(TableView table, ObservableList data) {
         int rowCount = data.size();
         TableHeaderRow headerRow = (TableHeaderRow) table.lookup("TableHeaderRow");
