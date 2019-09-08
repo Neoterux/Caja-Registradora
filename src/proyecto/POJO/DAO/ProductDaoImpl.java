@@ -11,8 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import proyecto.BD.Connector;
 import proyecto.Custom.DbgMessage;
 import proyecto.POJO.ProductModel;
@@ -50,9 +49,10 @@ public class ProductDaoImpl implements ProductDAO{
             stm.setString(2, product.getNombre_producto());
             stm.setFloat(3, product.getPrecio());
             stm.setInt(4, product.getCantidad_disponible());
-            logger.log(Level.INFO, "Ejecutando Insert en tabla Producto rows_affected[{0}]", stm.executeUpdate());          
+            stm.executeUpdate();
+            logger.info("Ejecutando Insert en tabla Producto");          
         }catch(SQLException e){
-            logger.log(Level.SEVERE, "Error al Ejecutar Insert en tabla Producto:", e);
+            logger.error("Error al Ejecutar Insert en tabla Producto:", e);
             
         }
         return registered;
@@ -72,11 +72,13 @@ public class ProductDaoImpl implements ProductDAO{
             con = Connector.connect(false);
             stm = con.prepareStatement("DELETE FROM bodega WHERE id = ?");            
             stm.setString(1, product.getId());
-            logger.log(Level.INFO, "Ejecutando Delete en tabla Producto rows_affected[{0}]", stm.executeUpdate());    
+            
+            stm.executeUpdate();
+            logger.info( "Ejecutando Delete en tabla Producto rows_affected" );    
             con.close();
             deleted = true;            
         }catch(SQLException e){
-            logger.log(Level.SEVERE, "Error al Ejecutar Delete en tabla Producto ", e);
+            logger.info("Error al Ejecutar Delete en tabla Producto ", e);
         }        
         return deleted;
     }
@@ -94,11 +96,12 @@ public class ProductDaoImpl implements ProductDAO{
             stm.setInt(3, product.getCantidad_disponible());
             stm.setString(4, product.getId());
             System.out.println("[UPDATE class='ProductDaoImpl']: " + stm.executeUpdate());
-            logger.log(Level.INFO, "Ejecutando Update en tabla Producto rows_affected[{0}]", stm.executeUpdate());    
+            stm.executeUpdate();
+            logger.info("Ejecutando Update en tabla Producto");    
             con.close();
             updated = true;
         }catch(SQLException e){
-            logger.log(Level.SEVERE, "Error al Ejecutar Update en tabla Producto ", e);            
+            logger.error("Error al Ejecutar Update en tabla Producto ", e);            
         }
         return updated;
     }
@@ -121,11 +124,11 @@ public class ProductDaoImpl implements ProductDAO{
                 lst.add(pd);
                 System.out.println(pd.toString());
             }
-            logger.log(Level.INFO, "Ejecutando GetAll en tabla Producto items[{0}]", lst.size());    
+            logger.info("Ejecutando GetAll en tabla Producto");    
            con.close();
             
         }catch(SQLException e){
-            logger.log(Level.SEVERE, "Error al Ejecutar GetAll en tabla Producto:" , e);
+            logger.error("Error al Ejecutar GetAll en tabla Producto:" , e);
         }
         
         return lst;
@@ -146,13 +149,11 @@ public class ProductDaoImpl implements ProductDAO{
                 p.setPrecio(rs.getFloat("precio"));
                 p.setNombre_producto(rs.getString("nombre_producto"));
             }
-            logger.log(Level.INFO, "Ejecutando GetFromID en tabla Producto", p);    
+            logger.info("Ejecutando GetFromID en tabla Producto");    
             con.close();
         }catch(SQLException e){
-            logger.log(Level.SEVERE, "Error al Ejecutar GetFromID en tabla Producto:", e);
+            logger.error("Error al Ejecutar GetFromID en tabla Producto:", e);
         }
-        
-        
         return p;
     }
     
@@ -177,11 +178,11 @@ public class ProductDaoImpl implements ProductDAO{
                 pm.setCantidad_disponible(rs.getInt("cantidad_disponible"));
                 l.add(pm);
             }
-            logger.log(Level.INFO, "Ejecutando SearchByIDorName en tabla Producto items[{0}]", l.size());    
+            logger.info("Ejecutando SearchByIDorName en tabla Producto ");    
             con.close();
             
         }catch(SQLException e){
-            logger.log(Level.SEVERE, "Error al Ejecutar SearchByIDorName en tabla Producto : " + e.getMessage(), e);
+            logger.error("Error al Ejecutar SearchByIDorName en tabla Producto: ",e);
         }
         
         return l;

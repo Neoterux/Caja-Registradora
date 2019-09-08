@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import org.apache.log4j.Logger;
 import proyecto.Custom.CrudType;
 import proyecto.Custom.CustomAlert;
 import proyecto.Custom.DbgMessage;
@@ -27,6 +28,7 @@ public class ClientDaoImpl implements ClientsDAO{
     
     private final boolean DEBUG = false;
     private DbgMessage dbg;
+    private final Logger log = Logger.getLogger(getClass().getName());
 
     
     /**
@@ -38,6 +40,7 @@ public class ClientDaoImpl implements ClientsDAO{
     @Override
     public boolean register(Clients client) {
         boolean registered = false;
+        log.info("Insertando datos de Clientes");
         String sql = "INSERT IGNORE INTO clientes values(?,?,?,?,?,?)";
         try(Connection con = proyecto.BD.Connector.connect(DEBUG);){
             PreparedStatement pstm = con.prepareStatement(sql);
@@ -47,13 +50,11 @@ public class ClientDaoImpl implements ClientsDAO{
             pstm.setString(4, client.getTelefono());
             pstm.setString(5, client.getDireccion());
             pstm.setString(6, client.getEmail());
-            System.out.println("[class= 'ClientDaoImpl' INSERT] rows Affected: " + pstm.executeUpdate() );
-            
+            pstm.executeUpdate();
             con.close();
             registered = true;
         }catch(SQLException e){
-            dbg = new DbgMessage(ExceptionType.SQLEXCEPTION, this, e.getMessage());
-            dbg.showExceptionDbg();
+            log.error("Error al registrar datos de clientes", e);
         }
         return registered;
     }
@@ -64,6 +65,7 @@ public class ClientDaoImpl implements ClientsDAO{
      */
     @Override
     public List<Clients> get() {
+        log.info("Obteniendo datos de clientes");
         boolean registered = false;
         String sql = "SELECT * FROM clientes";
         List<Clients> list = new ArrayList();
@@ -83,8 +85,7 @@ public class ClientDaoImpl implements ClientsDAO{
             registered = true;
             con.close();
         }catch(SQLException e){
-            dbg = new DbgMessage(ExceptionType.SQLEXCEPTION, this, e.getMessage());
-            dbg.showExceptionDbg();    
+            log.error("Error al obtener los datos de los clientes", e);
         }
         return list;
     }
@@ -98,6 +99,7 @@ public class ClientDaoImpl implements ClientsDAO{
      */
     @Override
     public boolean update(Clients client) {
+        log.info("Actualizando datos de cliente");
        boolean updated = false;
         String sql = "UPDATE clientes SET cedula=?, nombre=?, apellido=?, direccion=?, telefono=?, email=? WHERE cedula=? OR email=?";
         try (Connection conn = proyecto.BD.Connector.connect(DEBUG)){
@@ -116,8 +118,7 @@ public class ClientDaoImpl implements ClientsDAO{
             updated = true;
 
         }catch (SQLException  e){
-            dbg = new DbgMessage(ExceptionType.SQLEXCEPTION, this, e.getMessage());
-            dbg.showExceptionDbg();
+            log.error("Error al actualizar datos de clientes", e);
         }
         return updated;
     }
@@ -130,6 +131,7 @@ public class ClientDaoImpl implements ClientsDAO{
      */
     @Override
     public boolean delete(Clients client) {
+        log.info("Borrando cliente...");
         boolean deleted = false;        
         String sql = "DELETE FROM clientes WHERE cedula = ?";
         try(Connection con = proyecto.BD.Connector.connect(DEBUG)){
@@ -140,11 +142,7 @@ public class ClientDaoImpl implements ClientsDAO{
             deleted = true;
             con.close();
         }catch(SQLException e){
-            dbg = new DbgMessage(ExceptionType.SQLEXCEPTION, this, e.getMessage());
-            dbg.showExceptionDbg();
-            
-            CustomAlert al = new CustomAlert(Alert.AlertType.INFORMATION, "Cliente ya existente", ButtonType.APPLY);
-           al.showAndWait();
+            log.error("Error al borrar cliente:", e);
         }        
         return deleted;
     }
@@ -156,6 +154,7 @@ public class ClientDaoImpl implements ClientsDAO{
      */
     @Override
     public Clients getFromCedula(String cedula) {
+        log.info("Buscando cliente con C.I ::" + cedula);
         String sql = "SELECT * FROM clientes WHERE cedula=?";
         Clients c = new Clients();
         try(Connection con = proyecto.BD.Connector.connect(DEBUG)){           
@@ -172,8 +171,7 @@ public class ClientDaoImpl implements ClientsDAO{
             }
             con.close();
         }catch(SQLException e){
-            dbg = new DbgMessage(ExceptionType.SQLEXCEPTION, this, e.getMessage());
-            dbg.showExceptionDbg();            
+            log.error("Error al buscar cliente", e);
         }
         return c;
     }
@@ -185,6 +183,7 @@ public class ClientDaoImpl implements ClientsDAO{
      */
     @Override
     public List<Clients> search(String identifier) {
+        log.info("Buscando a cliente por nombre o cedula");
         List<Clients> l = new ArrayList<>();
         String sql = "SELECT * FROM clientes WHERE cedula LIKE ? OR nombre LIKE ?";
         
@@ -205,7 +204,7 @@ public class ClientDaoImpl implements ClientsDAO{
             }
             con.close();
         }catch(SQLException e){            
-            e.printStackTrace();
+            log.error("Error al buscar cliente", e);
         }        
         return l;
     }

@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.Alert;
+import org.apache.log4j.Logger;
 import proyecto.BD.Connector;
 
 /**
@@ -15,7 +16,7 @@ import proyecto.BD.Connector;
  */
 public class WorkerDaoImpl implements WorkersDAO {
     private final boolean DEBUG_ENABLED = false;
-    
+    private final Logger log = Logger.getLogger(getClass().getName());
     
     
     private Connection conn;
@@ -30,6 +31,7 @@ public class WorkerDaoImpl implements WorkersDAO {
      */
     @Override
     public boolean reg(Worker worker) {
+        log.info("Registrando Empleado");
         boolean register = false;
         sql = "INSERT INTO empleados VALUES (?,?,?,?,?,?,?,?,?)";
         try {
@@ -44,11 +46,11 @@ public class WorkerDaoImpl implements WorkersDAO {
             stm.setString(7, worker.getEmail());
             stm.setString(8, worker.getPass());
             stm.setBoolean(9, worker.isAdmin());
-            System.out.println("[ROWS AFFECTED]: "+ stm.executeUpdate());
+            stm.executeUpdate();
             conn.close();
             register = true;
         }catch (SQLException e){
-            System.out.println("\n[ERROR CLASS = 'WORKERDAOIMPL' ]: Error al Ejecutar reg {\n" + e.getMessage() +"\n}\n");
+            log.error("Error al registrar empleado", e);
         }
         return register;
     }
@@ -59,6 +61,7 @@ public class WorkerDaoImpl implements WorkersDAO {
      */
     @Override
     public List<Worker> get() {
+        log.info("Obteniendo datos de empleados");
         ResultSet rs;
         sql = "SELECT * FROM empleados ORDER BY nombre;";
         List<Worker> workerList = new ArrayList<>();
@@ -86,7 +89,7 @@ public class WorkerDaoImpl implements WorkersDAO {
             rs.close();
             conn.close();
         }catch (SQLException e){
-            System.out.println("\n[ERROR CLASS = 'WORKERDAOIMPL' ]: Error al Ejecutar get {\n" + e.getSQLState() +"\n}\n");
+           log.error("Error al obtener los datos de los empleados", e);
         }
         return workerList;
     }
@@ -99,6 +102,7 @@ public class WorkerDaoImpl implements WorkersDAO {
      */
     @Override
     public boolean update(Worker worker) {
+        log.info("Actualizando trabajador");
         boolean updated = false;
         //String sql = "UPDATE  empleados SET nombre = ? WHERE id = ?";
         sql = "UPDATE  empleados SET id=?, nombre = ?, apellido = ?, cedula = ?, estado_civil = ?, direccion = ?, email = ?, pass = ?, isAdmin = ? WHERE id = ? OR cedula = ?";
@@ -121,7 +125,7 @@ public class WorkerDaoImpl implements WorkersDAO {
             updated = true;
 
         }catch (SQLException  e){
-            System.out.println("\n[ERROR("+e.getSQLState()+") CLASS = 'WORKERDAOIMPL' ]: Error al Actualizar {\n" + e.getMessage() +"\n}\n");
+            log.error("Error al actualizar trabajador", e);
         }
 
         return updated;
@@ -135,6 +139,7 @@ public class WorkerDaoImpl implements WorkersDAO {
      */
     @Override
     public boolean delete(Worker worker) {
+        log.info("Borrando trabajador");
         ResultSet rs;
         sql ="DELETE FROM empleados WHERE id=?;";
         boolean deleted = false;
@@ -147,7 +152,7 @@ public class WorkerDaoImpl implements WorkersDAO {
             deleted = true;
 
         }catch (SQLException e){
-            System.out.println("\n[ERROR CLASS = 'WORKERDAOIMPL' ]: Error al Eliminar {\n" + e.getSQLState() +"\n}\n");
+            log.error("Error al borrar empleado", e);
         }
         return false;
     }
@@ -160,6 +165,7 @@ public class WorkerDaoImpl implements WorkersDAO {
      */
     @Override
     public boolean isAdmin(Worker worker) {
+        log.info("Verificando permisos de admin");
         ResultSet rs;
         sql ="SELECT isAdmin FROM empleados WHERE id = ? AND pass = ?";
         boolean isAdmin = false;
@@ -176,7 +182,7 @@ public class WorkerDaoImpl implements WorkersDAO {
             conn.close();
 
         }catch (SQLException e){
-            System.out.println("\n[ERROR CLASS = 'WORKERDAOIMPL' ]: Error al chequear permisos {\n" + e.getSQLState() +"\n}\n");
+            log.error("Error al verificar los permisos de admin", e);
         }
         return isAdmin;
     }
@@ -189,7 +195,8 @@ public class WorkerDaoImpl implements WorkersDAO {
      *         false->Si tuvo errores al ejecutarse
      */
     public List<Worker> search(String name){
-        ResultSet rs = null;
+        log.info("Buscando trabajador por nombre");
+        ResultSet rs;
         sql ="SELECT * FROM empleados WHERE nombre like ?";
         List<Worker> workerList = new ArrayList<>();
         try {
@@ -215,7 +222,7 @@ public class WorkerDaoImpl implements WorkersDAO {
             conn.close();
 
         }catch (SQLException e){
-            System.out.println("\n[ERROR("+e.getSQLState()+") CLASS = 'WORKERDAOIMPL' ]: Error al Obtener Busqueda {\n" + e.getMessage() +"\n}\n");
+            log.error("Error al buscar trabajador");
         }
         return workerList;
 
@@ -228,31 +235,33 @@ public class WorkerDaoImpl implements WorkersDAO {
      */
     @Override
     public Worker specific(Worker worker) {
-        PreparedStatement pstm;
+       log.info("Buscando trabajador especifico");
         Worker w = new Worker();
-        final String sql = "SELECT * FROM empleados WHERE id=? AND pass=?";
+        sql = "SELECT * FROM empleados WHERE id=? AND pass=?";
         try {
             conn = Connector.connect(DEBUG_ENABLED);
-            pstm = conn.prepareStatement(sql);
-            pstm.setString(1, worker.getId());
-            pstm.setString(2, worker.getPass());
-            ResultSet rs = pstm.executeQuery();
+            stm = conn.prepareStatement(sql);
+            stm.setString(1, worker.getId());
+            stm.setString(2, worker.getPass());
+            ResultSet rs = stm.executeQuery();
             if (rs == null){
                 new Alert(Alert.AlertType.INFORMATION, "usuario o contraseña incorrecta").show();
             }
-            rs.next();
-            w.setId(rs.getString("id"));
-            w.setNombre(rs.getString("nombre"));
-            w.setApellido(rs.getString("apellido"));
-            w.setCedula(rs.getString("cedula"));
-            w.setDireccion(rs.getString("direccion"));
-            w.setEstado_civil(rs.getString("estado_civil"));
-            w.setEmail(rs.getString("email"));
-            w.setPass(rs.getString("pass"));
-            w.setAdmin(rs.getBoolean("isAdmin"));
+            if(rs.next()){
+                w.setId(rs.getString("id"));
+                w.setNombre(rs.getString("nombre"));
+                w.setApellido(rs.getString("apellido"));
+                w.setCedula(rs.getString("cedula"));
+                w.setDireccion(rs.getString("direccion"));
+                 w.setEstado_civil(rs.getString("estado_civil"));
+                w.setEmail(rs.getString("email"));
+                w.setPass(rs.getString("pass"));
+                w.setAdmin(rs.getBoolean("isAdmin"));
+            }
             conn.close();
             rs.close();
         } catch (SQLException e) {
+            log.error("Error al buscar un trabajador especifico", e);
         }
         
         return w;
