@@ -17,10 +17,12 @@ import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -259,6 +261,7 @@ public class AdminController  implements Initializable, Runnable {
     private ControllerClient cc;
     private ControllerProduct cp;
     private ControllerOrder co;
+    private Alert warningAlert;
     
     /**
      * Constructor para construir el fxml y mostrarlo
@@ -266,6 +269,7 @@ public class AdminController  implements Initializable, Runnable {
      */
     public AdminController(Worker w){
         BasicConfigurator.configure();
+        warningAlert = new Alert(Alert.AlertType.WARNING);
         logger.debug("Cargando Interfaz de Admin");
         stage = new Stage();
         cw = new ControllerWorker();
@@ -457,19 +461,31 @@ public class AdminController  implements Initializable, Runnable {
      */
      @FXML
     void searchByDate(ActionEvent event) {
-       Odata.clear();
+       
         logger.debug("Buscando Factura por fecha");
+         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
          LocalDate lf = dpFirst.getValue();
          LocalDate le = dpEnd.getValue();
          Date f = Date.from(lf.atStartOfDay().atZone(ZoneId.of("America/Guayaquil")).toInstant());
          Date e = Date.from(le.atStartOfDay().atZone(ZoneId.of("America/Guayaquil")).toInstant());
-         logger.debug("Fecha desde: " + f.toString());
-         logger.debug("Fecha hasta: " + e.toString());
-         logger.info("Buscando por factura por fecha");
-       co.searchByDate(f, e)
+         if (e.getTime() == f.getTime()){
+             e = new Date(e.getTime() + TimeUnit.DAYS.toMillis(1));
+         }
+         if( e.getTime() < f.getTime()){
+             //TODO("Error escoger bien fecha")
+             warningAlert.setContentText("Verifique bien la fecha, fecha desde tiene que ser menor a fecha hasta");
+             warningAlert.show();
+         }
+         if(e.getTime() > f.getTime()){
+             Odata.clear();
+            logger.debug("Fecha desde: " + format.format(f));
+            logger.debug("Fecha hasta: " + format.format(e));
+            logger.info("Buscando por factura por fecha");
+            co.searchByDate(f, e)
                .forEach(Odata::add);
-         System.out.println("[Date First] " + f.toString() + "\t[End Date] " + e.toString());
-       tvProforma.setItems(Odata);
+            System.out.println("[Date First] " + f.toString() + "\t[End Date] " + e.toString());
+            tvProforma.setItems(Odata);
+         }
     }
     
     
