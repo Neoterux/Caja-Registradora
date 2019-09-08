@@ -5,6 +5,7 @@
  */
 package proyecto.POJO.DAO;
 
+import com.mysql.cj.x.protobuf.MysqlxSql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -214,7 +215,7 @@ public class OrderDaoImpl implements OrderDAO {
             } catch (ParseException ex) {
                log.error("ParseException ocurrida", ex);
             }
-            
+            log.debug("busqueda por fecha sql: " + pst);
             ResultSet rs = pst.executeQuery();
             
             while(rs.next()){
@@ -227,7 +228,6 @@ public class OrderDaoImpl implements OrderDAO {
                 o.setTotal_precio(rs.getFloat("total_precio"));
                 o.setFecha(rs.getTimestamp("fecha").getTime());
                 o.setEmpleado_id(rs.getString("empleado_id"));
-                System.out.println("[ORDER SQL] " + o.toString());
                 l.add(o.toModel());
             }
         }catch(SQLException e){

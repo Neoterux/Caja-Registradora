@@ -17,7 +17,7 @@ import proyecto.POJO.OrderModel;
  */
 public class ControllerOrder {
 
-    private final OrderDaoImpl odi;
+    private OrderDaoImpl odi;
 
     public ControllerOrder() {
         odi = new OrderDaoImpl();
