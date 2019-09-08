@@ -11,11 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import proyecto.Custom.CustomAlert;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import proyecto.BD.Connector;
 import proyecto.Custom.DbgMessage;
-import proyecto.Custom.ExceptionType;
 import proyecto.POJO.ProductModel;
 import proyecto.POJO.Producto;
 
@@ -23,13 +22,14 @@ import proyecto.POJO.Producto;
  *
  * @author Neoterux
  */
+
 public class ProductDaoImpl implements ProductDAO{
     
     private String sql;
     private Connection con;
     private PreparedStatement stm;
     private DbgMessage dbg;
-    
+    private final Logger logger = Logger.getLogger(ProductDaoImpl.class.getName());
     
     
     /**
@@ -50,15 +50,11 @@ public class ProductDaoImpl implements ProductDAO{
             stm.setString(2, product.getNombre_producto());
             stm.setFloat(3, product.getPrecio());
             stm.setInt(4, product.getCantidad_disponible());
-            System.out.println("[INSERT Class='ProductDaoImple'] rows Affected: " + stm.executeUpdate());            
+            logger.log(Level.INFO, "Ejecutando Insert en tabla Producto rows_affected[{0}]", stm.executeUpdate());          
         }catch(SQLException e){
-            dbg = new DbgMessage(ExceptionType.SQLEXCEPTION, this, e.getMessage());
-            dbg.showExceptionDbg();
-            CustomAlert al = new CustomAlert(Alert.AlertType.INFORMATION, "Prodcuto ya existente", ButtonType.APPLY);
-           al.showAndWait();
+            logger.log(Level.SEVERE, "Error al Ejecutar Insert en tabla Producto:", e);
+            
         }
-        
-        
         return registered;
     }
     
@@ -73,15 +69,14 @@ public class ProductDaoImpl implements ProductDAO{
     public boolean delete(Producto product) {
         boolean deleted = false;
         try{
-            con = proyecto.BD.Connector.connect(false);
+            con = Connector.connect(false);
             stm = con.prepareStatement("DELETE FROM bodega WHERE id = ?");            
-            stm.setString(1, product.getId());            
-            System.out.println("[ROWS AFFECTED] : " + stm.executeUpdate());            
+            stm.setString(1, product.getId());
+            logger.log(Level.INFO, "Ejecutando Delete en tabla Producto rows_affected[{0}]", stm.executeUpdate());    
             con.close();
             deleted = true;            
         }catch(SQLException e){
-            dbg = new DbgMessage(ExceptionType.SQLEXCEPTION, this, e.getMessage());
-            dbg.showExceptionDbg();
+            logger.log(Level.SEVERE, "Error al Ejecutar Delete en tabla Producto ", e);
         }        
         return deleted;
     }
@@ -92,18 +87,18 @@ public class ProductDaoImpl implements ProductDAO{
     public boolean update(Producto product) {
         boolean updated = false;
         try{
-            con = proyecto.BD.Connector.connect(false);            
+            con = Connector.connect(false);            
             stm = con.prepareStatement("UPDATE bodega SET nombre_producto=?, precio=?, cantidad_disponible=? WHERE id = ? ");            
             stm.setString(1, product.getNombre_producto());
             stm.setFloat(2, product.getPrecio());
             stm.setInt(3, product.getCantidad_disponible());
             stm.setString(4, product.getId());
             System.out.println("[UPDATE class='ProductDaoImpl']: " + stm.executeUpdate());
+            logger.log(Level.INFO, "Ejecutando Update en tabla Producto rows_affected[{0}]", stm.executeUpdate());    
             con.close();
             updated = true;
         }catch(SQLException e){
-            dbg = new DbgMessage(ExceptionType.SQLEXCEPTION, this, e.getMessage());
-            dbg.showExceptionDbg();            
+            logger.log(Level.SEVERE, "Error al Ejecutar Update en tabla Producto ", e);            
         }
         return updated;
     }
@@ -113,7 +108,7 @@ public class ProductDaoImpl implements ProductDAO{
         ArrayList<Producto> lst = new ArrayList<>();
         
         try{
-            con = proyecto.BD.Connector.connect(false);
+            con = Connector.connect(false);
             stm = con.prepareStatement("SELECT * FROM bodega");
             ResultSet rs = stm.executeQuery();
             
@@ -126,11 +121,11 @@ public class ProductDaoImpl implements ProductDAO{
                 lst.add(pd);
                 System.out.println(pd.toString());
             }
+            logger.log(Level.INFO, "Ejecutando GetAll en tabla Producto items[{0}]", lst.size());    
            con.close();
             
         }catch(SQLException e){
-            dbg = new DbgMessage(ExceptionType.SQLEXCEPTION, this, e.getMessage());
-            dbg.showExceptionDbg();
+            logger.log(Level.SEVERE, "Error al Ejecutar GetAll en tabla Producto:" , e);
         }
         
         return lst;
@@ -138,10 +133,10 @@ public class ProductDaoImpl implements ProductDAO{
 
     @Override
     public Producto getFromId(String id) {
-        sql = "SELECT * FROM BODEGA WHERE id=?";
+        sql = "SELECT * FROM bodega WHERE id=?";
         Producto p = new Producto();
         try{
-            con = connect();
+            con = Connector.connect(false);
             stm = con.prepareStatement(sql);
             stm.setString(1, id);
             ResultSet rs = stm.executeQuery();
@@ -151,27 +146,23 @@ public class ProductDaoImpl implements ProductDAO{
                 p.setPrecio(rs.getFloat("precio"));
                 p.setNombre_producto(rs.getString("nombre_producto"));
             }
+            logger.log(Level.INFO, "Ejecutando GetFromID en tabla Producto", p);    
             con.close();
         }catch(SQLException e){
-            dbg = new DbgMessage(ExceptionType.SQLEXCEPTION, this, e.getMessage());
-            dbg.showExceptionDbg();
+            logger.log(Level.SEVERE, "Error al Ejecutar GetFromID en tabla Producto:", e);
         }
         
         
         return p;
     }
     
-    
-    private Connection connect(){
-        return proyecto.BD.Connector.connect(false);
-    }
 
     @Override
     public List<ProductModel> searchByIDorName(String IDorName) {
         List<ProductModel> l = new ArrayList<>();
         sql = "SELECT * FROM bodega WHERE id like ? OR nombre_producto like ?";
         try{
-            con = proyecto.BD.Connector.connect(false);
+            con = Connector.connect(false);
             stm = con.prepareStatement(sql);
             stm.setString(1, IDorName + "%");
             stm.setString(2, IDorName + "%");
@@ -186,10 +177,11 @@ public class ProductDaoImpl implements ProductDAO{
                 pm.setCantidad_disponible(rs.getInt("cantidad_disponible"));
                 l.add(pm);
             }
+            logger.log(Level.INFO, "Ejecutando SearchByIDorName en tabla Producto items[{0}]", l.size());    
             con.close();
             
         }catch(SQLException e){
-            
+            logger.log(Level.SEVERE, "Error al Ejecutar SearchByIDorName en tabla Producto : " + e.getMessage(), e);
         }
         
         return l;

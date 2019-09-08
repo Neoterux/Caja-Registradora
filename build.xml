@@ -58,6 +58,7 @@
             <zipfileset src="${file.reference.gson}" includes="**/*.class" excludes="META-INF/*"/>
             <zipfileset src="${file.reference.javase}" includes="**/*.class" excludes="META-INF/*"/>
             <zipfileset src="${file.reference.mysql-connector}" includes="**/*.class" excludes="META-INF/*"/>
+            <zipfileset src="${file.reference.Log4j}" includes="**/*.class" excludes="META-INF/*"/>
             <!--manifest>
                 <attribute name="Main-Class" value="Proyecto/Main"/>
             </manifest-->

@@ -15,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.apache.log4j.Logger;
+import proyecto.BD.Connector;
 import proyecto.POJO.Order;
 import proyecto.POJO.OrderModel;
 
@@ -24,15 +26,20 @@ import proyecto.POJO.OrderModel;
  */
 public class OrderDaoImpl implements OrderDAO {
 
+    private final Logger log = Logger.getLogger(getClass().getName());
+    
+    private Connection conn;
+    private String sql;
+    private PreparedStatement pst;
     @Override
     public boolean register(Order order) {
         boolean registered = false;
-        //(id, cedula, id_producto, cantidad, precio, total_precio, fecha, empleado_id)
-        //"INSERT INTO proforma VALUES (uuid_to_bin(?, true),?,?,?,?,?,?,?)";
-        String sql = "INSERT INTO proforma(id, cedula, id_producto, cantidad, precio, total_precio, fecha, empleado_id) VALUES (UNHEX(REPLACE(?, \'-\', \'\')),?,?,?,?,?,?,?)";
+        log.debug("Insert para factura: " + order.getId());
+        sql = "INSERT INTO proforma(id, cedula, id_producto, cantidad, precio, total_precio, fecha, empleado_id) VALUES (UNHEX(REPLACE(?, \'-\', \'\')),?,?,?,?,?,?,?)";
         
-        try(Connection conn = proyecto.BD.Connector.connect(false)){
-               PreparedStatement pst = conn.prepareStatement(sql);
+        try{
+               conn = Connector.connect(false);
+               pst = conn.prepareStatement(sql);
                
                pst.setString(1, order.getId());
                pst.setString(2, order.getCedula());
@@ -43,11 +50,12 @@ public class OrderDaoImpl implements OrderDAO {
                pst.setTimestamp(7, new Timestamp(order.getFecha().getTime()) );
                pst.setString(8, order.getEmpleado_id());
                
-               System.out.println("[Registros afectados] " + pst.executeUpdate());
-            conn.close();
+               log.info("Ejecutando Insert en tabla de Ordenes");
+               pst.executeUpdate();
+               conn.close();
             registered = true;
         }catch (SQLException e){
-            e.printStackTrace();
+            log.error("SQLException producida :", e);
         }
         return registered;
     }
@@ -55,17 +63,18 @@ public class OrderDaoImpl implements OrderDAO {
     @Override
     public boolean delete(Order order) {
         boolean deleted = false;
-        String sql = "DELETE FROM proforma WHERE id = cast(? as BINARY(16))";
-        try(Connection con = proyecto.BD.Connector.connect(false)){
-            PreparedStatement pst = con.prepareStatement(sql);
+        sql = "DELETE FROM proforma WHERE id_text = ?";
+        try{
+            conn = Connector.connect(false);
+            pst = conn.prepareStatement(sql);
             
             pst.setString(1, order.getId());
-            
-            System.out.println("[Registros afectados] " + pst.executeUpdate());
-            con.close();
+            log.info("Ejecutando Delete para orden: " + order.getId());
+            pst.executeUpdate();
+            conn.close();
             deleted = true;
         }catch(SQLException e){
-            e.printStackTrace();
+            log.error("SQLException producida", e);
         }
         return deleted;
     }
@@ -73,10 +82,10 @@ public class OrderDaoImpl implements OrderDAO {
     @Override
     public boolean update(Order order) {
         boolean updated = false;
-        //"UPDATE proforma SET cedula = ?, id_producto = ?, cantidad = ?, precio = ?, total_precio = ?, fecha = ?, empleado_id = ?  WHERE id = cast(? as BINARY(16))";
-        String sql = "UPDATE proforma SET cedula = ?, id_producto = ?, cantidad = ?, precio = ?, total_precio = ?, fecha = ?, empleado_id = ?  WHERE id = cast(? as BINARY(16))";
-        try(Connection con = proyecto.BD.Connector.connect(false)){
-            PreparedStatement pst = con.prepareStatement(sql);
+        sql = "UPDATE proforma SET cedula = ?, id_producto = ?, cantidad = ?, precio = ?, total_precio = ?, fecha = ?, empleado_id = ?  WHERE id_text = ?";
+        try{
+            conn = Connector.connect(false);
+            pst = conn.prepareStatement(sql);
             pst.setString(1, order.getCedula());
             pst.setString(2, order.getId_producto());
             pst.setInt(3, order.getCantidad());
@@ -86,23 +95,25 @@ public class OrderDaoImpl implements OrderDAO {
             pst.setString(7, order.getEmpleado_id());
             pst.setString(8, order.getId());
             
-            System.out.println("[Registros afectados] " + pst.executeUpdate());
-            con.close();
+            log.info("Ejecutando Update para factura: " + order.getId());
+            pst.executeUpdate();
+            conn.close();
             updated = true;
         }catch(SQLException e){
-            e.printStackTrace();
+            log.error("SQLException producida", e);
         }
         return updated;
     }
 
     @Override
     public List<Order> get() {
+        log.info("Obteniendo todas las facturas");
         ArrayList<Order> list = new ArrayList<>();
         
-        try(Connection con = proyecto.BD.Connector.connect(false)){
-            
-            PreparedStatement stm = con.prepareStatement("SELECT * FROM proforma");
-            ResultSet rs = stm.executeQuery();
+        try{
+            conn = Connector.connect(false);
+            pst = conn.prepareStatement("SELECT * FROM proforma");
+            ResultSet rs = pst.executeQuery();
             
             while(rs.next()){
                 Order o = new Order();
@@ -114,12 +125,11 @@ public class OrderDaoImpl implements OrderDAO {
                 o.setTotal_precio(rs.getFloat("total_precio"));
                 o.setFecha(rs.getTimestamp("fecha").getTime());
                 o.setEmpleado_id(rs.getString("empleado_id"));
-                System.out.println("[ORDER SQL] " + o.toString());
                 list.add(o);
             }
-            con.close();
+            conn.close();
         }catch(SQLException e){
-            e.printStackTrace();
+            log.error("SQLException producida", e);
         }
         
         return list;
@@ -127,8 +137,9 @@ public class OrderDaoImpl implements OrderDAO {
 
     @Override
     public List<OrderModel> searchByIdOrCID(String IDorCID) {
+        log.info("Obteniendo facturas por ID o Cedula");
         List<OrderModel> l = new ArrayList<>();
-        String sql = "SELECT * FROM proforma WHERE id_text = ? OR cedula = ?";
+        sql = "SELECT * FROM proforma WHERE id_text = ? OR cedula = ?";
         try{
             Connection con = proyecto.BD.Connector.connect(false);
             PreparedStatement pst = con.prepareStatement(sql);
@@ -150,24 +161,27 @@ public class OrderDaoImpl implements OrderDAO {
                 l.add(o.toModel());
             }
             
-        }catch(SQLException e){}
+        }catch(SQLException e){
+            log.error("SQLException producida", e);
+        }
         
         return l;
     }
 
     @Override
     public List<OrderModel> searchByDate(Date first, Date end) {
+        log.info("Obteniendo facturas por fecha");
         List<OrderModel> l = new ArrayList<>();
-        String sql = "SELECT * FROM proforma WHERE fecha BETWEEN ? AND ?";
+        sql = "SELECT * FROM proforma WHERE fecha BETWEEN ? AND ?";
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try{
-            Connection con = proyecto.BD.Connector.connect(false);
-            PreparedStatement pst = con.prepareStatement(sql);
+            conn = Connector.connect(false);
+            pst = conn.prepareStatement(sql);
             try {
                 pst.setTimestamp(1, new Timestamp( df.parse(df.format(first)).getTime() ));
                 pst.setTimestamp(2, new Timestamp( df.parse(df.format(end)).getTime() ));
             } catch (ParseException ex) {
-                
+               log.error("ParseException ocurrida", ex);
             }
             
             ResultSet rs = pst.executeQuery();
@@ -186,7 +200,7 @@ public class OrderDaoImpl implements OrderDAO {
                 l.add(o.toModel());
             }
         }catch(SQLException e){
-            e.printStackTrace();
+            log.error("SQLException ocurrida", e);
         }
             
         return l;

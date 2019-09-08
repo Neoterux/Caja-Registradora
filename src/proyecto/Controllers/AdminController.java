@@ -29,6 +29,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import proyecto.Custom.LogInDialog;
 import proyecto.POJO.Clients;
 import proyecto.POJO.ClientsModel;
@@ -51,7 +53,7 @@ import proyecto.Utils.NodeUtils;
 
 public class AdminController  implements Initializable, Runnable {
     
-
+    private final Logger logger = Logger.getLogger(AdminController.class.getName());
     /**
      * Objetos propios del FXML que van a referenciar a los objetos de la interfaz
      */
@@ -202,7 +204,7 @@ public class AdminController  implements Initializable, Runnable {
  */
     @FXML
     private void onApplyClick(Event event) {
-
+            
         if(event.getSource().equals(btnApply)) {
             //Boton agregar tab Empleados
             if (NodeUtils.notIsNullOrEmpty(txtID, txtNom, txtApellido, txtCedula, txtDir, txtEmail, txtPassword)) {
@@ -260,6 +262,8 @@ public class AdminController  implements Initializable, Runnable {
      * @param w Trabajador que inicio sesion
      */
     public AdminController(Worker w){
+        BasicConfigurator.configure();
+        logger.debug("Cargando Interfaz de Admin");
         stage = new Stage();
         cw = new ControllerWorker();
         cc = new ControllerClient();
@@ -279,27 +283,14 @@ public class AdminController  implements Initializable, Runnable {
             stage.show();
         
         }catch(IOException ie ){
-            System.out.println("[IOException]\n"
-                    + "[Class = ] AdminController\n"
-                    + "[Cause]: " + ie.getCause() +
-                    "\n[Message]: "+ ie.getMessage()
-                    + "\n[StackTrace]: ");
-                    ie.printStackTrace();
+            logger.fatal("IOException producida, finalizando tarea: " + ie.getMessage());
             
         }catch (NullPointerException ne){
-            System.out.println("[NullPointerException]\n"
-                    + "[Class = ] AdminController\n"
-                    + "[Cause]: " + ne.getCause() +
-                    "\n[Message]: "+ ne.getMessage()
-                    + "\n[StackTrace]: ");
-                    ne.printStackTrace();
+            logger.fatal("NullPointerException producida, finalizando tarea: " + ne.getMessage());
         }catch(IllegalArgumentException iae){
-            System.out.println("[ILLEGAL ARGUMENT EXCEPTION]\n"
-                    + "[Class = ] AdminController\n"
-                    + "[Cause]: " + iae.getCause() +
-                    "\n[Message]: "+ iae.getMessage()
-                    + "\n[StackTrace]: ");
-                    iae.printStackTrace();
+            logger.fatal("IllegalArgumentException producida, finalizando tarea: " + iae.getMessage());
+        }catch(IllegalStateException ie){
+            logger.fatal("IllegalStateExeption producida, finalizando tarea: " + ie.getMessage());
         }
             
         
@@ -315,6 +306,7 @@ public class AdminController  implements Initializable, Runnable {
     @FXML
     void GeneralKeyPressed(KeyEvent event) {
         if(event.getCode() == KeyCode.F5){
+            logger.debug("Actualizando tablas");
             buildClientData();
             buildPedidoData();
             buildProductData();
@@ -384,6 +376,7 @@ public class AdminController  implements Initializable, Runnable {
      */
      @FXML
     void addProduct(ActionEvent event) {
+        logger.debug("Añadiendo Producto");
       if (NodeUtils.notIsNullOrEmpty(txtProductID, txtProductName, txtProductCuant, txtProductPrice)){
           Producto p = new Producto();
           p.setId(txtProductID.getText().trim());
@@ -391,9 +384,11 @@ public class AdminController  implements Initializable, Runnable {
           p.setPrecio(Float.parseFloat(txtProductPrice.getText().trim()));
           p.setCantidad_disponible(Integer.parseInt(txtProductCuant.getText().trim()));
           cp.register(p);
+          logger.info("Registrando Producto");
           buildProductData();
           succesfullDataAlert.showAndWait();
       }else{
+          
           emptyTextFieldAlert.showAndWait();
       }
     }
@@ -404,8 +399,10 @@ public class AdminController  implements Initializable, Runnable {
      */
      @FXML
     void searchProforma(ActionEvent event) {
+        logger.debug("Buscando entre las facturas");
        if(NodeUtils.notIsNullOrEmpty(txtSearchProforma)){
            Odata.clear();
+           logger.info("Buscando facturas");
            co.searchByIDorCID(txtSearchProforma.getText().trim()).forEach(Odata::add);
            tvProforma.setItems(Odata);
            
@@ -426,11 +423,12 @@ public class AdminController  implements Initializable, Runnable {
             buildClientData();
         }else{
             Cdata.clear();
-            
+            logger.info("Buscando cliente");
             cc.search(txtSearchClient.getText().trim()).forEach(cl->{
                 Cdata.add(cl.toModel());
             });
             tClientes.setItems(Cdata);
+            
         }
     }
 
@@ -442,7 +440,8 @@ public class AdminController  implements Initializable, Runnable {
     void searchProduct(ActionEvent event) {
         if (NodeUtils.notIsNullOrEmpty(txtSearchProduct)){
             Pdata.clear();
-            
+            logger.info("Buscando productos");
+            cp.searchByIDorName(txtSearchProduct.getText().trim());
         }else{
             buildProductData();
         }
@@ -455,10 +454,14 @@ public class AdminController  implements Initializable, Runnable {
      @FXML
     void searchByDate(ActionEvent event) {
        Odata.clear();
+        logger.debug("Buscando Factura por fecha");
          LocalDate lf = dpFirst.getValue();
          LocalDate le = dpEnd.getValue();
          Date f = Date.from(lf.atStartOfDay().atZone(ZoneId.of("America/Guayaquil")).toInstant());
          Date e = Date.from(le.atStartOfDay().atZone(ZoneId.of("America/Guayaquil")).toInstant());
+         logger.debug("Fecha desde: " + f.toString());
+         logger.debug("Fecha hasta: " + e.toString());
+         logger.info("Buscando por factura por fecha");
        co.searchByDate(f, e)
                .forEach(Odata::add);
          System.out.println("[Date First] " + f.toString() + "\t[End Date] " + e.toString());
@@ -480,6 +483,7 @@ public class AdminController  implements Initializable, Runnable {
             cli.setEmail(txtCliEmail.getText().trim());
             cli.setNombre(txtCliNombre.getText().trim());
             cli.setTelefono(txtCliNombre.getText().trim());
+            logger.info("Registrando Cliente");
             cc.register(cli);
             buildClientData();
             succesfullDataAlert.showAndWait();
@@ -551,25 +555,22 @@ public class AdminController  implements Initializable, Runnable {
      * Cargar datos de empleado de la base de datos a la tabla
      */
     private void buildWorkerData(){
-        
+        logger.info("Obteniendo datos de Trabajadores...");
         Wdata.clear();
         cw.getList().forEach((w) -> {
                 Wdata.add(w.toWorkerModel());
         });
-
-            //System.out.println("Ejecutandola tb" + Wdata);
-            tEmpleado.setItems(Wdata);
+        tEmpleado.setItems(Wdata);
     }
     
     /**
      * Metodo para cargar datos de clientes de la base de datos a la tabla
      */
     private void buildClientData() {
-        
         Cdata.clear();
+        logger.info("Obteniendo datos de Clientes...");
         cc.list().forEach((client)->{
             Cdata.add(client.toModel());
-            System.out.println(client.toString());
         });
         tClientes.setItems(Cdata);
     }
@@ -580,9 +581,9 @@ public class AdminController  implements Initializable, Runnable {
      */
     private void buildProductData(){
         Pdata.clear();
+        logger.info("Obteniendo datos de Productos");
         cp.list().forEach((product) ->{
             Pdata.add(product.toModel());
-            System.out.println("[BUILD PRODUCT DATA]" + product.toString());
         });
         tvProduct.setItems(Pdata);
     }
@@ -593,6 +594,8 @@ public class AdminController  implements Initializable, Runnable {
      */
     private void buildPedidoData(){
         Odata.clear();
+        
+        logger.info("Obteniendo datos de Facturas");
         co.list().forEach((order)->{
             Odata.add(order.toModel());
         });
@@ -627,21 +630,21 @@ public class AdminController  implements Initializable, Runnable {
      * Metodo para actualizar tabla de clientes y empleado
      * @param actionEvent 
      */
-    public void onUpdate(ActionEvent actionEvent) {
+    /*public void onUpdate(ActionEvent actionEvent) {
         if(actionEvent.getSource().equals(btnEmpUp)){
             /**
              * Tab Empleado Button Update
-             */
+             /
             buildWorkerData();
             
         }else{
             /**
              * Tab Cliente Button Update
-             */
+             /
             buildClientData();
 
         }
-    }
+    }*/
 
     
     /**
