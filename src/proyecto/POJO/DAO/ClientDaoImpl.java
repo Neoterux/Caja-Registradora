@@ -41,7 +41,7 @@ public class ClientDaoImpl implements ClientsDAO{
     public boolean register(Clients client) {
         boolean registered = false;
         log.info("Insertando datos de Clientes");
-        sql = "INSERT IGNORE INTO clientes values(?,?,?,?,?,?)";
+        sql = "INSERT INTO clientes(cedula, nombre, apellido, telefono, direccion, email) values(?,?,?,?,?,?)";
         try{
             con = Connector.connect(DEBUG);
         
