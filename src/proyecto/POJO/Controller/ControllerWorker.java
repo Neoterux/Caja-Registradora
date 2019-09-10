@@ -12,31 +12,29 @@ import java.util.List;
 
 public class ControllerWorker {
 
+    private final WorkerDaoImpl dao = new WorkerDaoImpl();
     /**
      *
      * @param worker
      */
-    public void register(Worker worker){
-        WorkerDaoImpl dao = new WorkerDaoImpl();
-        dao.reg(worker);
+    public boolean register(Worker worker){
+        return dao.reg(worker);
     }
 
     /**
      *
      * @param worker
      */
-    public void update(Worker worker){
-        WorkerDaoImpl dao = new WorkerDaoImpl();
-        dao.update(worker);
+    public boolean update(Worker worker){
+        return dao.update(worker);
     }
 
     /**
      *
      * @param worker
      */
-    public void delete(Worker worker){
-        WorkerDaoImpl dao = new WorkerDaoImpl();
-        dao.delete(worker);
+    public boolean delete(Worker worker){
+        return dao.delete(worker);
     }
 
     /**
@@ -44,7 +42,6 @@ public class ControllerWorker {
      * @return
      */
     public List<Worker> getList(){
-        WorkerDaoImpl dao = new WorkerDaoImpl();
         return dao.get();
     }
 
@@ -54,7 +51,6 @@ public class ControllerWorker {
      * @return
      */
     public List<Worker> search(String name){
-        WorkerDaoImpl dao = new WorkerDaoImpl();
         return dao.search(name);
     }
 
@@ -64,7 +60,7 @@ public class ControllerWorker {
      * @return
      */
     public boolean isAdmin(Worker worker){
-        return new WorkerDaoImpl().isAdmin(worker);
+        return dao.isAdmin(worker);
     }
     
     /**
@@ -74,6 +70,6 @@ public class ControllerWorker {
      */
     public Worker getSpecific(Worker worker){
         
-        return new WorkerDaoImpl().specific(worker);
+        return dao.specific(worker);
     }
 }

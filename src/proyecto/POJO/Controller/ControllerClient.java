@@ -15,20 +15,23 @@ import proyecto.POJO.DAO.ClientDaoImpl;
  */
 public class ControllerClient {
     
+    
+    private final ClientDaoImpl cdi = new ClientDaoImpl();
     /**
      *
      * @param c
+     * @return 
      */
-    public void update(Clients c){
-        new ClientDaoImpl().update(c);
+    public boolean update(Clients c){
+        return cdi.update(c);
     }
     
     /**
      *
      * @param c
      */
-    public void delete(Clients c){
-        new ClientDaoImpl().delete(c);
+    public boolean delete(Clients c){
+        return cdi.delete(c);
     }
     
     /**
@@ -36,15 +39,15 @@ public class ControllerClient {
      * @return
      */
     public List<Clients> list(){
-        return new ClientDaoImpl().get();
+        return cdi.get();
     }
     
     /**
      *
      * @param c
      */
-    public void register(Clients c){
-        new ClientDaoImpl().register(c);
+    public boolean register(Clients c){
+        return cdi.register(c);
     }
     
     /**
@@ -53,7 +56,7 @@ public class ControllerClient {
      * @return
      */
     public Clients getFromCedula(String cedula){
-        return new ClientDaoImpl().getFromCedula(cedula);
+        return cdi.getFromCedula(cedula);
     }
     
     /**
@@ -62,7 +65,7 @@ public class ControllerClient {
      * @return
      */
     public List<Clients> search(String nameOrCed){
-        return new ClientDaoImpl().search(nameOrCed);
+        return cdi.search(nameOrCed);
     }
     
 }

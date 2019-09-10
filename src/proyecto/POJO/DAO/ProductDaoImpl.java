@@ -28,7 +28,7 @@ public class ProductDaoImpl implements ProductDAO{
     private Connection con;
     private PreparedStatement stm;
     private DbgMessage dbg;
-    private final Logger logger = Logger.getLogger(ProductDaoImpl.class.getName());
+    private final Logger logger = Logger.getLogger("ProductDAO");
     
     
     /**
@@ -40,7 +40,7 @@ public class ProductDaoImpl implements ProductDAO{
     @Override
     public boolean register(Producto product) {
         boolean registered = false;
-        sql = "INSERT INTO bodega values(?,?,?,?)";
+        sql = "INSERT INTO bodega values(upper(?), upper(?), ?, ?)";
         
         try{
             con = Connector.connect(false);

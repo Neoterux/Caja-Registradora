@@ -5,7 +5,6 @@
  */
 package proyecto.POJO.DAO;
 
-import com.mysql.cj.x.protobuf.MysqlxSql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +26,7 @@ import proyecto.POJO.OrderModel;
  */
 public class OrderDaoImpl implements OrderDAO {
 
-    private final Logger log = Logger.getLogger(getClass().getName());
+    private final Logger log = Logger.getLogger("OrderDAO");
     
     private Connection conn;
     private String sql;
@@ -50,12 +49,12 @@ public class OrderDaoImpl implements OrderDAO {
                
                pst.setString(1, order.getId());
                pst.setString(2, order.getCedula());
-               pst.setString(3, order.getId_producto());
+               pst.setString(3, order.getId_producto().toUpperCase());
                pst.setInt(4, order.getCantidad());
                pst.setFloat(5, order.getPrecio());
                pst.setFloat(6, order.getTotal_precio());
                pst.setTimestamp(7, new Timestamp(order.getFecha().getTime()) );
-               pst.setString(8, order.getEmpleado_id());
+               pst.setString(8, order.getEmpleado_id().toUpperCase());
                
                log.info("Ejecutando Insert en tabla de Ordenes");
                pst.executeUpdate();
@@ -104,12 +103,12 @@ public class OrderDaoImpl implements OrderDAO {
             conn = Connector.connect(false);
             pst = conn.prepareStatement(sql);
             pst.setString(1, order.getCedula());
-            pst.setString(2, order.getId_producto());
+            pst.setString(2, order.getId_producto().toUpperCase());
             pst.setInt(3, order.getCantidad());
             pst.setFloat(4, order.getPrecio());
             pst.setFloat(5, order.getTotal_precio());
             pst.setTimestamp(6, new Timestamp(order.getFecha().getTime()));
-            pst.setString(7, order.getEmpleado_id());
+            pst.setString(7, order.getEmpleado_id().toUpperCase());
             pst.setString(8, order.getId());
             
             log.info("Ejecutando Update para factura: " + order.getId());
@@ -139,13 +138,13 @@ public class OrderDaoImpl implements OrderDAO {
             while(rs.next()){
                 Order o = new Order();
                 o.setID(rs.getString("id_text"));
-                o.setId_producto(rs.getString("id_producto"));
+                o.setId_producto(rs.getString("id_producto").toUpperCase());
                 o.setCedula(rs.getString("cedula"));
                 o.setCantidad(rs.getInt("cantidad"));
                 o.setPrecio(rs.getFloat("precio"));
                 o.setTotal_precio(rs.getFloat("total_precio"));
                 o.setFecha(rs.getTimestamp("fecha").getTime());
-                o.setEmpleado_id(rs.getString("empleado_id"));
+                o.setEmpleado_id(rs.getString("empleado_id").toUpperCase());
                 list.add(o);
             }
             conn.close();
@@ -167,8 +166,8 @@ public class OrderDaoImpl implements OrderDAO {
         List<OrderModel> l = new ArrayList<>();
         sql = "SELECT * FROM proforma WHERE id_text = ? OR cedula = ?";
         try{
-            Connection con = proyecto.BD.Connector.connect(false);
-            PreparedStatement pst = con.prepareStatement(sql);
+            conn = Connector.connect(false);
+            pst = conn.prepareStatement(sql);
             pst.setString(1, IDorCID);
             pst.setString(2, IDorCID);
            ResultSet rs = pst.executeQuery();

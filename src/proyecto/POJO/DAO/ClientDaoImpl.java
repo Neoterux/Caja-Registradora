@@ -24,7 +24,7 @@ public class ClientDaoImpl implements ClientsDAO{
     
     private final boolean DEBUG = false;
     private DbgMessage dbg;
-    private final Logger log = Logger.getLogger(getClass().getName());
+    private final Logger log = Logger.getLogger("ClientDAO");
     
     private String sql;
     private Connection con;
@@ -41,7 +41,7 @@ public class ClientDaoImpl implements ClientsDAO{
     public boolean register(Clients client) {
         boolean registered = false;
         log.info("Insertando datos de Clientes");
-        sql = "INSERT INTO clientes(cedula, nombre, apellido, telefono, direccion, email) values(?,?,?,?,?,?)";
+        sql = "INSERT INTO clientes(cedula, nombre, apellido, telefono, direccion, email) values(?,upper(?),upper(?),?,upper(?),upper(?))";
         try{
             con = Connector.connect(DEBUG);
         
@@ -109,14 +109,14 @@ public class ClientDaoImpl implements ClientsDAO{
              con = Connector.connect(DEBUG);
             
             stm = con.prepareStatement(sql);
-            stm.setString(1, client.getCedula());
-            stm.setString(2, client.getNombre());
-            stm.setString(3, client.getApellido());
-            stm.setString(4, client.getDireccion());
-            stm.setString(5, client.getTelefono());
-            stm.setString(6, client.getEmail());
-            stm.setString(7, client.getCedula());
-            stm.setString(8, client.getEmail());
+            stm.setString(1, client.getCedula().toUpperCase());
+            stm.setString(2, client.getNombre().toUpperCase());
+            stm.setString(3, client.getApellido().toUpperCase());
+            stm.setString(4, client.getDireccion().toUpperCase());
+            stm.setString(5, client.getTelefono().toUpperCase());
+            stm.setString(6, client.getEmail().toUpperCase());
+            stm.setString(7, client.getCedula().toUpperCase());
+            stm.setString(8, client.getEmail().toUpperCase());
             stm.executeUpdate();
             con.close();
             updated = true;

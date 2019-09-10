@@ -16,20 +16,22 @@ import proyecto.POJO.Producto;
  */
 public class ControllerProduct {
 
+    
+    private final ProductDaoImpl pdao = new ProductDaoImpl();
     /**
      *
      * @param p
      */
-    public void update(Producto p){
-        new ProductDaoImpl().update(p);
+    public boolean update(Producto p){
+        return pdao.update(p);
     }
     
     /**
      *
      * @param p
      */
-    public void delete(Producto p){
-        new ProductDaoImpl().delete(p);
+    public boolean delete(Producto p){
+        return pdao.delete(p);
     }
     
     /**
@@ -37,15 +39,15 @@ public class ControllerProduct {
      * @return
      */
     public List<Producto> list(){
-        return new ProductDaoImpl().get();
+        return pdao.get();
     }
     
     /**
      *
      * @param p
      */
-    public void register(Producto p){
-        new ProductDaoImpl().register(p);
+    public boolean register(Producto p){
+        return pdao.register(p);
     }
     
     /**
@@ -54,7 +56,7 @@ public class ControllerProduct {
      * @return
      */
     public Producto getFromID(String id){
-        return new ProductDaoImpl().getFromId(id);
+        return pdao.getFromId(id);
     }
     
     /**
@@ -63,6 +65,6 @@ public class ControllerProduct {
      * @return
      */
     public List<ProductModel> searchByIDorName(String IDorName){
-        return new ProductDaoImpl().searchByIDorName(IDorName);
+        return pdao.searchByIDorName(IDorName);
     }
 }

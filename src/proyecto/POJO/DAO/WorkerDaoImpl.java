@@ -16,7 +16,7 @@ import proyecto.BD.Connector;
  */
 public class WorkerDaoImpl implements WorkersDAO {
     private final boolean DEBUG_ENABLED = false;
-    private final Logger log = Logger.getLogger(getClass().getName());
+    private final Logger log = Logger.getLogger("WorkerDAO");
     
     
     private Connection conn;
@@ -33,7 +33,7 @@ public class WorkerDaoImpl implements WorkersDAO {
     public boolean reg(Worker worker) {
         log.info("Registrando Empleado");
         boolean register = false;
-        sql = "INSERT INTO empleados VALUES (?,?,?,?,?,?,?,?,?)";
+        sql = "INSERT INTO empleados VALUES (upper(?), upper(?), upper(?), ?, upper(?), upper(?), upper(?), ?, ?)";
         try {
             conn = Connector.connect(DEBUG_ENABLED);
             stm = conn.prepareStatement(sql);
@@ -105,7 +105,7 @@ public class WorkerDaoImpl implements WorkersDAO {
         log.info("Actualizando trabajador");
         boolean updated = false;
         //String sql = "UPDATE  empleados SET nombre = ? WHERE id = ?";
-        sql = "UPDATE  empleados SET id=?, nombre = ?, apellido = ?, cedula = ?, estado_civil = ?, direccion = ?, email = ?, pass = ?, isAdmin = ? WHERE id = ? OR cedula = ?";
+        sql = "UPDATE  empleados SET id= upper(?), nombre = upper(?), apellido = upper(?), cedula = ?, estado_civil = upper(?), direccion = upper(?), email = upper(?), pass = ?, isAdmin = ? WHERE id = ? OR cedula = ?";
         try {
             conn = Connector.connect(DEBUG_ENABLED);
             stm = conn.prepareStatement(sql);
