@@ -209,7 +209,7 @@ public class AdminController  implements Initializable, Runnable {
  */
     @FXML
     private void onApplyClick(Event event) {
-            
+        
         if(event.getSource().equals(btnApply)) {
             //Boton agregar tab Empleados
             if (NodeUtils.notIsNullOrEmpty(txtID, txtNom, txtApellido, txtCedula, txtDir, txtEmail, txtPassword)) {
@@ -222,28 +222,15 @@ public class AdminController  implements Initializable, Runnable {
                 w.setEmail(txtEmail.getText().trim());
                 w.setPass(txtPassword.getText().trim());
                 w.setEstado_civil(cboxEstado.getSelectionModel().getSelectedItem());
-                cw.register(w);
-                succesfullDataAlert.showAndWait();
-                buildWorkerData();
-
-            } else {
-                emptyTextFieldAlert.showAndWait();
-            }
-        }else if (event.getSource().equals(btnApplyCli)){
-            //Boton agregar tab Cliente
-            
-            if (NodeUtils.notIsNullOrEmpty(txtCliCedula, txtCliNombre, txtCliApellido, txtCliTelf, txtCliDir, txtCliEmail)) {
-                Clients c = new Clients();
-                c.setCedula(txtCliCedula.getText());
-                c.setNombre(txtCliNombre.getText());
-                c.setApellido(txtCliApellido.getText());
-                c.setDireccion(txtCliDir.getText());
-                c.setTelefono(txtCliTelf.getText());
-                c.setEmail(txtCliEmail.getText());
-                cc.register(c);
-
-                
+                if(cw.register(w)){
                     succesfullDataAlert.showAndWait();
+                    buildWorkerData();
+                }else{
+                    errorAlert.setContentText("No se pudo agregar Trabajador, ya existente");
+                    errorAlert.show();
+                }
+                NodeUtils.clearAll(txtID, txtNom, txtApellido, txtCedula, txtDir, txtEmail, txtPassword);
+                cbAdmin.setSelected(false);
 
             } else {
                 emptyTextFieldAlert.showAndWait();
@@ -262,6 +249,7 @@ public class AdminController  implements Initializable, Runnable {
     private ControllerProduct cp;
     private ControllerOrder co;
     private Alert warningAlert;
+    private Alert errorAlert;
     
     /**
      * Constructor para construir el fxml y mostrarlo
@@ -270,6 +258,7 @@ public class AdminController  implements Initializable, Runnable {
     public AdminController(Worker w){
         BasicConfigurator.configure();
         warningAlert = new Alert(Alert.AlertType.WARNING);
+        errorAlert  = new Alert(Alert.AlertType.ERROR);
         logger.debug("Cargando Interfaz de Admin");
         stage = new Stage();
         cw = new ControllerWorker();
@@ -390,10 +379,16 @@ public class AdminController  implements Initializable, Runnable {
           p.setNombre_producto(txtProductName.getText().trim());
           p.setPrecio(Float.parseFloat(txtProductPrice.getText().trim()));
           p.setCantidad_disponible(Integer.parseInt(txtProductCuant.getText().trim()));
-          cp.register(p);
           logger.info("Registrando Producto");
-          buildProductData();
-          succesfullDataAlert.showAndWait();
+          if(cp.register(p)){
+            buildProductData();
+            succesfullDataAlert.showAndWait();
+          }else{
+              errorAlert.setContentText("Error datos de producto ya existente");
+              errorAlert.show();
+          }
+          
+          
           NodeUtils.clearAll(txtProductID, txtProductName, txtProductCuant, txtProductPrice);
       }else{
           
@@ -449,6 +444,7 @@ public class AdminController  implements Initializable, Runnable {
         if (NodeUtils.notIsNullOrEmpty(txtSearchProduct)){
             Pdata.clear();
             logger.info("Buscando productos");
+            
             cp.searchByIDorName(txtSearchProduct.getText().trim());
         }else{
             buildProductData();
@@ -504,9 +500,15 @@ public class AdminController  implements Initializable, Runnable {
             cli.setNombre(txtCliNombre.getText().trim());
             cli.setTelefono(txtCliTelf.getText().trim());
             logger.info("Registrando Cliente");
-            cc.register(cli);
-            buildClientData();
-            succesfullDataAlert.showAndWait();
+            if(cc.register(cli)){
+                succesfullDataAlert.showAndWait();
+                buildClientData();
+            }else{
+               errorAlert.setContentText("Error cliente ya existente");
+               errorAlert.show();
+            }
+            
+           
             NodeUtils.clearAll(txtCliCedula, txtCliApellido, txtCliNombre, txtCliEmail, txtCliTelf, txtCliDir);
         }else{
             emptyTextFieldAlert.showAndWait();
