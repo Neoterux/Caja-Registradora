@@ -139,22 +139,28 @@ public class NodeUtils {
     }
     
     
-    public static void NumberValidation(TextField textfield){
-        textfield.getProperties().put("vktype", "numeric");
-        textfield.setTextFormatter(new TextFormatter<>(c->{
-            if (c.isContentChange()) {
-            if (c.getControlNewText().length() == 0) {
-                return c;
-            }
-            try {
-                Integer.parseInt(c.getControlNewText());
-                return c;
-            } catch (NumberFormatException e) {
-            }
-            return null;
+    /**
+     * Añade un filtro al textfield para escribir caractered numericos
+     * @param textfields textfields a los que se les colocara el filtro
+     */
+    public static void NumberValidation(TextField ...textfields){
+        Arrays.asList(textfields).forEach(field->{
+            field.getProperties().put("vktype", "numeric");
+            field.setTextFormatter(new TextFormatter<>(c->{
+                if (c.isContentChange()) {
+                if (c.getControlNewText().length() == 0) {
+                    return c;
+                }
+                try {
+                    Integer.parseInt(c.getControlNewText());
+                    return c;
+                } catch (NumberFormatException e) {
+                }
+                return null;
 
-        }
-        return c;
-        }));
+                }
+                return c;
+            }));
+        });
     }
 }
