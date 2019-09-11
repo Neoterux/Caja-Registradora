@@ -1,7 +1,6 @@
 package proyecto.Controllers;
 
 
-import com.sun.org.apache.xpath.internal.operations.UnaryOperation;
 import java.io.IOException;
 import javafx.fxml.Initializable;
 import java.net.URL;
@@ -22,7 +21,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -361,7 +359,7 @@ public class UserController implements Initializable {
             this.txtCedula.requestFocus();        
         });
         NodeUtils.NumberValidation(txtCantidad, txtCedula);
-        NodeUtils.limitTextFieldLength(5, txtCodigo);        
+        NodeUtils.limitTextFieldLength(10, txtCodigo);        
         NodeUtils.limitTextFieldLength(10, txtCedula);
         list = FXCollections.observableArrayList();
         list.clear();
