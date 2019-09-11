@@ -540,6 +540,7 @@ public class AdminController  implements Initializable, Runnable {
         NodeUtils.limitTextFieldLength(10, txtCedula, txtCliCedula, txtCliTelf);
         NodeUtils.limitTextFieldLength(7, txtID);
         NodeUtils.limitTextFieldLength(5, txtProductID);
+        NodeUtils.NumberValidation(txtCedula, txtCliTelf, txtCliCedula, txtProductCuant);
         cboxEstado.getSelectionModel().selectFirst();
         cfgColumns();
         loadData();
