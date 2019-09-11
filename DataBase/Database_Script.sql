@@ -1,5 +1,7 @@
-Create database if not exists Test;
-use Test;
+SET global time_zone = '+5:00';
+-- set global max_connections_per_hour = 500;
+Create database if not exists Neoterux;
+use Neoterux;
 
 create table if not exists empleados(
 	id  varchar(7) not null  primary key unique, -- This would be used for authentication
@@ -28,9 +30,9 @@ create table if not exists clientes(
 
 
 create table if not exists bodega(
-	id varchar(5) not null primary key unique,
+	id varchar(10) not null primary key unique,
     nombre_producto varchar(25) not null,
-    precio float not null,
+    precio float(10,2) not null,
     cantidad_disponible int unsigned not null,
     index(id)
 );
@@ -46,8 +48,8 @@ create table if not exists proforma(
     24,0,'-')
  ) virtual,
 
-    cedula varchar(10) not null,
-    id_producto varchar(5) not null,
+cedula varchar(10) not null,
+    id_producto varchar(10) not null,
     cantidad int not null,
     precio float not null ,
     total_precio float not null,
