@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 
 /**
  *
@@ -135,5 +136,25 @@ public class NodeUtils {
         table.setMinHeight(tableHeight);
         table.setMaxHeight(tableHeight);
         table.setPrefHeight(tableHeight);
+    }
+    
+    
+    public static void NumberValidation(TextField textfield){
+        textfield.getProperties().put("vktype", "numeric");
+        textfield.setTextFormatter(new TextFormatter<>(c->{
+            if (c.isContentChange()) {
+            if (c.getControlNewText().length() == 0) {
+                return c;
+            }
+            try {
+                Integer.parseInt(c.getControlNewText());
+                return c;
+            } catch (NumberFormatException e) {
+            }
+            return null;
+
+        }
+        return c;
+        }));
     }
 }
