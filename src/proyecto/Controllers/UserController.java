@@ -1,6 +1,7 @@
 package proyecto.Controllers;
 
 
+import com.sun.org.apache.xpath.internal.operations.UnaryOperation;
 import java.io.IOException;
 import javafx.fxml.Initializable;
 import java.net.URL;
@@ -21,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -161,9 +163,17 @@ public class UserController implements Initializable {
     void tabRealeased(KeyEvent event) {
         System.out.println("[EJECUTSNDO TAB RELEASED] " + event.getCode());
         
+        if(event.getSource() == txtCedula){
+            if(!event.getCharacter().matches("\\d*")){
+                String nvalue = ((TextField)event.getSource()).getText();
+                ((TextField)event.getSource()).setText(nvalue.replaceAll("[^\\d]", ""));
+                ((TextField)event.getSource()).positionCaret(((TextField)event.getSource()).getText().length());
+            }
+        }
+        
        if(event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB){
            
-           if(event.getSource() == txtCedula && NodeUtils.isNullOrEmpty(txtNombre) && NodeUtils.notIsNullOrEmpty(txtCedula) ){
+           if(event.getSource() == txtCedula && NodeUtils.notIsNullOrEmpty(txtCedula) ){
                
                 Clients client = cc.getFromCedula(txtCedula.getText().trim());
                 c = client;
@@ -192,9 +202,14 @@ public class UserController implements Initializable {
     @FXML
     void keyPressed(KeyEvent event) {
         
-        if (event.getSource() == txtCantidad){
-            if(event.getText().matches("\\D")){
-                txtCantidad.setText(txtCantidad.getText().replaceAll("\\D", ""));
+        if(!(event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB || event.getCode() == KeyCode.BACK_SPACE || event.getCode() == KeyCode.LEFT|| event.getCode() == KeyCode.RIGHT))
+        if (event.getSource() == txtCantidad ){
+            if(event.getText().matches("\\D*")){
+                String nvalue= txtCantidad.getText().trim();
+                nvalue = nvalue.replace("[^\\d]", "");
+                txtCantidad.clear();
+                txtCantidad.setText(nvalue);            
+                txtCantidad.positionCaret(nvalue.length());
                 event.consume();
             }
         }
@@ -231,9 +246,7 @@ public class UserController implements Initializable {
          orderList.add(order);
       });
       
-      orderList.forEach((o)->{
-          co.register(o);
-      });
+      orderList.forEach(co::register);
       Producto p;
       //modify product quantity      
       for(ProductModel pm : tvProductos.getItems()){
@@ -333,19 +346,6 @@ public class UserController implements Initializable {
     }
     
     /**
-     * Metodo ignorado
-     * @return 
-     */
-    public boolean showWithReturn(){
-        boolean yes =false;
-        stage.show();
-        
-        return yes;
-    }
-    
-    
-    
-    /**
      * Metodo de initialize de siempre......
      * @param location ya sabes que es
      * @param resources 
@@ -360,10 +360,7 @@ public class UserController implements Initializable {
         Platform.runLater(()->{
             this.txtCedula.requestFocus();        
         });
-        txtCantidad.textProperty().addListener((o, ovalue, nvalue)->{
-            if(nvalue.matches("\\d*"))return;
-            txtCantidad.setText(nvalue.replaceAll("[^\\d]", ""));
-        });        
+        NodeUtils.NumberValidation(txtCantidad, txtCedula);
         NodeUtils.limitTextFieldLength(5, txtCodigo);        
         NodeUtils.limitTextFieldLength(10, txtCedula);
         list = FXCollections.observableArrayList();
