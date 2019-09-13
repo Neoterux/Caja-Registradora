@@ -3,6 +3,10 @@
     
     -fx-padding: 3 10 3 10;
 }
+.date-picker{
+    -fx-background-radius: 1000;
+    
+}
 
 #close{
     -fx-border-radius: 1;

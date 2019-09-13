@@ -51,7 +51,7 @@
 
     -->
 	
-    <target name="-post-jfx-jar">
+    <target name="post-jfx-jar">
         <jar jarfile="${dist.jar}" update="true">
             <zipfileset src="${dist.jar}" includes="**/*.class" />
             <zipfileset src="${file.reference.core}" includes="**/*.class" excludes="META-INF/*"/>

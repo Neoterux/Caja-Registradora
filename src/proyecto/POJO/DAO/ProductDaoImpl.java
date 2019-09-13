@@ -160,6 +160,7 @@ public class ProductDaoImpl implements ProductDAO{
                 p.setPrecio(rs.getFloat("precio"));
                 p.setNombre_producto(rs.getString("nombre_producto"));
             }
+            System.out.println("estp  " + p.toString());
             logger.info("Ejecutando GetFromID en tabla Producto");    
             con.close();
         }catch(SQLException e){

@@ -28,7 +28,7 @@ public class Clients {
      * @param cedula the cedula to set
      */
     public void setCedula(String cedula) {
-        this.cedula = cedula;
+        this.cedula = cedula.toUpperCase();
     }
 
     /**
@@ -42,7 +42,7 @@ public class Clients {
      * @param nombre the nombre to set
      */
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     /**
@@ -56,7 +56,7 @@ public class Clients {
      * @param apellido the apellido to set
      */
     public void setApellido(String apellido) {
-        this.apellido = apellido;
+        this.apellido = apellido.toUpperCase();
     }
 
     /**
@@ -70,7 +70,7 @@ public class Clients {
      * @param telefono the telefono to set
      */
     public void setTelefono(String telefono) {
-        this.telefono = telefono;
+        this.telefono = telefono.toUpperCase();
     }
 
     /**
@@ -84,7 +84,7 @@ public class Clients {
      * @param direccion the direccion to set
      */
     public void setDireccion(String direccion) {
-        this.direccion = direccion;
+        this.direccion = direccion.toUpperCase();
     }
 
     /**
@@ -98,7 +98,7 @@ public class Clients {
      * @param email the email to set
      */
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toUpperCase();
     }
     
     /**

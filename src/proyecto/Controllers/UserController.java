@@ -1,6 +1,7 @@
 package proyecto.Controllers;
 
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.IOException;
 import javafx.fxml.Initializable;
 import java.net.URL;
@@ -33,6 +34,7 @@ import proyecto.POJO.Controller.ControllerProduct;
 import proyecto.POJO.Order;
 import proyecto.POJO.ProductModel;
 import proyecto.POJO.Producto;
+import proyecto.POJO.ProformaModel;
 import proyecto.POJO.Worker;
 import proyecto.Utils.NodeUtils;
 import proyecto.Utils.RandomUtils;
@@ -132,13 +134,14 @@ public class UserController implements Initializable {
             if(NodeUtils.parseInt(txtCantidad) <= product.getCantidad_disponible()){
                 Producto p = cp.getFromID(txtCodigo.getText().trim());
                 p.setCantidad_disponible(NodeUtils.parseInt(txtCantidad));
-                System.out.println("[ADDPRODUCT] " + p.toModel().toString());
-                //System.out.println(p.toModel().existsInTable(tvProductos));
                 list.add(p.toModel());
                 updateTable();
                 calcOther();
-                NodeUtils.clearAll(txtCodigo, txtCedula, txtNombre, txtPNombre);
+                NodeUtils.clearAll(txtCodigo, txtPNombre, txtPrecio, txtCantidad);
                 txtCodigo.requestFocus();
+            }else{
+                Alert a = new Alert(Alert.AlertType.WARNING, "La cantidad es mayor a la bodega");
+                a.show();
             }          
         }else{
             event.consume();
@@ -160,15 +163,7 @@ public class UserController implements Initializable {
     @FXML
     void tabRealeased(KeyEvent event) {
         System.out.println("[EJECUTSNDO TAB RELEASED] " + event.getCode());
-        
-        if(event.getSource() == txtCedula){
-            if(!event.getCharacter().matches("\\d*")){
-                String nvalue = ((TextField)event.getSource()).getText();
-                ((TextField)event.getSource()).setText(nvalue.replaceAll("[^\\d]", ""));
-                ((TextField)event.getSource()).positionCaret(((TextField)event.getSource()).getText().length());
-            }
-        }
-        
+                
        if(event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB){
            
            if(event.getSource() == txtCedula && NodeUtils.notIsNullOrEmpty(txtCedula) ){
@@ -225,34 +220,46 @@ public class UserController implements Initializable {
        order.setID(RandomUtils.randID());
     }
     
+    
+    
     /**
      * Metodo para boton pagar
      * @param event click event
      */
     @FXML
     void pay(ActionEvent event) {
-        order.setID(RandomUtils.randID());
-        order.setFecha(new Date().getTime());
+        String uuid = RandomUtils.randID();
+        long time = new Date().getTime();
+        orderList.clear();
       tvProductos.getItems().forEach(it->{
-         order.setEmpleado_id(current_worker.getId());
-         order.setCedula(c.getCedula());
-         order.setId_producto(it.getId());
-         order.setCantidad(it.getCantidad_disponible());
-         order.setPrecio(it.getPrecio());
-         order.setTotal_precio(it.getTotal());
-         order.setProduct_name(it.getNombre_producto());
-         orderList.add(order);
+          Order o = new Order();
+          o.setID(uuid);
+          o.setFecha(time);
+          o.setEmpleado_id(current_worker.getId());
+          o.setCedula(c.getCedula());
+          o.setId_producto(it.getId());
+          o.setCantidad(it.getCantidad_disponible());
+          o.setPrecio(it.getPrecio());
+          o.setTotal_precio(it.getTotal());
+          o.setProduct_name(it.getNombre_producto());
+         
+          orderList.add(o);
       });
       
-      orderList.forEach(co::register);
+      orderList.forEach(it->{
+          co.register(it);
+          plist.add(it.toProforma());
+        });
+      
       Producto p;
       //modify product quantity      
       for(ProductModel pm : tvProductos.getItems()){
           p = cp.getFromID(pm.getId());
           p.setCantidad_disponible(p.getCantidad_disponible() - pm.getCantidad_disponible());
           cp.update(p);
-      }      
-      FacturaController fc = new FacturaController(orderList, c, subtotal, iva, total);    
+      }
+      NodeUtils.clearAll(txtCodigo, txtPNombre, txtPrecio, txtCantidad, txtNombre, txtCedula, txtNombre, txtTelefono, txtEmail, txtDireccion);
+      FacturaController fc = new FacturaController(orderList.get(0), uuid, plist, c, subtotal, iva, total);    
     }
     
    
@@ -292,12 +299,14 @@ public class UserController implements Initializable {
     private float subtotal;
     private float iva;
     private Scene scene;
+    private List<ProformaModel> plist;
     
     /**
      * COnstructor del GUI
      * @param worker trabajador que esta trabajando
      */
     public UserController(Worker worker) {
+        plist = new ArrayList<>();
         stage = new Stage();
         date = new Date();
         order = new Order();
@@ -351,8 +360,6 @@ public class UserController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Entrando en Controller User");
-        stage.setMinWidth(1000f);
-        stage.setMinHeight(600f);
        btnReturn.setVisible(current_worker.isAdmin());      
         txtCedula.positionCaret(0);
         Platform.runLater(()->{

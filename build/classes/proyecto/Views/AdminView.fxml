@@ -499,9 +499,9 @@
                                     <HBox fx:id="debugDateSearch" alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
                                        <children>
                                           <Label text="Desde" />
-                                          <DatePicker fx:id="dpFirst" />
+                                          <DatePicker fx:id="dpFirst" editable="false" promptText="dd/MM/aaaa" />
                                           <Label text="Hasta" />
-                                          <DatePicker fx:id="dpEnd" />
+                                          <DatePicker fx:id="dpEnd" editable="false" promptText="dd/MM/aaaa" />
                                           <Button alignment="CENTER" mnemonicParsing="false" onAction="#searchByDate" text="Buscar" />
                                        </children>
                                     </HBox>

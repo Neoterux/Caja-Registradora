@@ -66,7 +66,7 @@ public class Order {
      * @param id_producto the id_producto to set
      */
     public void setId_producto(String id_producto) {
-        this.id_producto = id_producto;
+        this.id_producto = id_producto.toUpperCase();
     }
 
     /**
@@ -138,7 +138,7 @@ public class Order {
      * @param empleado_id the empleado_id to set
      */
     public void setEmpleado_id(String empleado_id) {
-        this.empleado_id = empleado_id;
+        this.empleado_id = empleado_id.toUpperCase();
     }
     
     /**

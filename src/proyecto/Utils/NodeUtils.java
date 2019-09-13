@@ -6,6 +6,7 @@ import java.util.List;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -13,7 +14,7 @@ import javafx.scene.control.TextFormatter;
 
 /**
  *
- * @author labfe
+ * @author Neoterux
  */
 public class NodeUtils {
 
@@ -80,7 +81,8 @@ public class NodeUtils {
         try{
             return Integer.parseInt(textfield.getText().trim());
         }catch(NumberFormatException e){
-            
+            Alert a = new Alert(Alert.AlertType.ERROR, "No se pudo obtener datos del campo de texto, por favor revise el formato");
+            a.show();
         }
         return 0;
     }

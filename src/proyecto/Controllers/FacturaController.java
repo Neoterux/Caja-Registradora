@@ -10,12 +10,14 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.Code39Writer;
+import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -113,7 +115,8 @@ public class FacturaController implements Initializable {
      */
     private String proformaCode;
     private ObservableList<ProformaModel> list;
-    private List<Order> orders;
+    private List<ProformaModel> orders;
+    private Order o;
     private Clients client;
     private float subtotal;
     private float iva;
@@ -122,15 +125,17 @@ public class FacturaController implements Initializable {
     
     /**
      * Constructor que genera la interfaz grafica de la factura
+     * @param proforma_uuid
      * @param orders lista de las ordenes que se listaran en la factura
      * @param client cliente que efectuo la compra  
      * @param subtotal subtotal de la compra
      * @param iva iva de la compra
      * @param total subtotal + iva
      */
-    public FacturaController( List<Order> orders, Clients client, float subtotal, float iva, float total){
+    public FacturaController(Order o, String proforma_uuid,  List<ProformaModel> orders, Clients client, float subtotal, float iva, float total){
+        this.o = o;
         stage = new Stage();
-        proformaCode = orders.get(0).getId();
+        proformaCode = proforma_uuid;
         this.subtotal = subtotal;
         this.total = total;
         this.iva = iva;
@@ -167,12 +172,14 @@ public class FacturaController implements Initializable {
         
         //NodeUtils.setTableHeightByRowCount(tvProforma, list);
         list = FXCollections.observableArrayList();
-        orders.forEach(it->{
-            list.add(it.toProforma());
-            System.out.println(it.toString());
-        });
+        
+        list.addAll(orders);
         cfgColumn();
+        //tvProforma.setFixedCellSize(25);
+        //tvProforma.prefHeightProperty().bind(Bindings.size(tvProforma.getItems()).multiply(tvP.getFixedCellSize()).add(30));
         tvProforma.setItems(list);
+        tvProforma.prefHeightProperty().bind(Bindings.size(tvProforma.getItems()).multiply(tvProforma.getFixedCellSize()).add(30));
+        //setTableHeightByRowCount(tvProforma, list);
         generateQR();
         SimpleDateFormat df = new SimpleDateFormat("dd/mm/yyyy");
         
@@ -180,8 +187,8 @@ public class FacturaController implements Initializable {
         lblCedula.setText(client.getCedula().toUpperCase());
         lblDireccion.setText(client.getDireccion().toUpperCase());
         lblEmail.setText(client.getEmail().toUpperCase());
-        lblEmpleado.setText(orders.get(0).getEmpleado_id().toUpperCase());
-        lblDate.setText(df.format(orders.get(0).getFecha()));
+        lblEmpleado.setText(o.getEmpleado_id());
+        lblDate.setText(df.format(o.getFecha()));
         lblCode.setText(proformaCode);
         lblval.setText(String.valueOf(subtotal));
         lblsub.setText(String.valueOf(subtotal));
@@ -189,6 +196,20 @@ public class FacturaController implements Initializable {
         lblTotal.setText(String.valueOf(total));
         
         
+    }
+    
+    static void setTableHeightByRowCount(TableView table, ObservableList data) {
+        int rowCount = data.size();
+        TableHeaderRow headerRow = (TableHeaderRow) table.lookup("TableHeaderRow");
+        double tableHeight = (rowCount * table.getFixedCellSize())
+        // add the insets or we'll be short by a few pixels
+        + table.getInsets().getTop() + table.getInsets().getBottom()
+        // header row has its own (different) height
+        + (headerRow == null ? 0 : headerRow.getHeight());
+
+        table.setMinHeight(tableHeight);
+        table.setMaxHeight(tableHeight);
+        table.setPrefHeight(tableHeight);
     }
     
     /**

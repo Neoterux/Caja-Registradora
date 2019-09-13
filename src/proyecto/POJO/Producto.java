@@ -29,7 +29,7 @@ public class Producto {
      * @param id the id to set
      */
     public void setId(String id) {
-        this.id = id;
+        this.id = id.toUpperCase();
     }
 
     /**
@@ -43,7 +43,7 @@ public class Producto {
      * @param nombre_producto the nombre_producto to set
      */
     public void setNombre_producto(String nombre_producto) {
-        this.nombre_producto = nombre_producto;
+        this.nombre_producto = nombre_producto.toUpperCase();
     }
 
     /**
@@ -122,17 +122,11 @@ public class Producto {
      */
     public ProductModel toModel(){
         ProductModel pm = new ProductModel();
-        try{
             pm.setId(id);
             pm.setNombre_producto(nombre_producto);
             pm.setCantidad_disponible(cantidad_disponible);
             pm.setPrecio(precio);
             pm.setTotal(calcTotal());
-        }catch(NullPointerException e){
-            System.out.println("[Class = 'Producto'] Exception: " + e.getMessage() +
-                    "\n[CAUSE]: " + e.getCause());
-        }
-        
         return pm;
     }
     

@@ -82,7 +82,8 @@
                   <TextField id="txtCantidad" fx:id="txtCantidad" layoutX="438.0" layoutY="9.0" maxWidth="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" prefWidth="75.0" promptText="CANTIDAD" text="0">
                      <font>
                         <Font size="14.0" />
-                     </font></TextField>
+                     </font>
+                  </TextField>
                   <Label layoutX="362.0" layoutY="14.0" text="CANTIDAD" />
                   <Button fx:id="btnAddProduct" layoutX="412.0" layoutY="57.0" mnemonicParsing="false" onAction="#AddProduct" text="Añadir" />
                </children>

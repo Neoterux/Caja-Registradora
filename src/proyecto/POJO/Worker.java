@@ -49,7 +49,7 @@ public class Worker {
      * @param id id a colocar
      */
     public void setId(String id) {
-        this.id = id;
+        this.id = id.toUpperCase();
     }
 
     /**
@@ -57,7 +57,7 @@ public class Worker {
      * @return nombre del trabajador
      */
     public String getNombre() {
-        return nombre;
+        return nombre.toUpperCase();
     }
 
     
@@ -66,7 +66,7 @@ public class Worker {
      * @param nombre nombre a colocar
      */
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     /**
@@ -82,7 +82,7 @@ public class Worker {
      * @param apellido apellido a colocar
      */
     public void setApellido(String apellido) {
-        this.apellido = apellido;
+        this.apellido = apellido.toUpperCase();
     }
 
     /**
@@ -115,7 +115,7 @@ public class Worker {
      * @param estado_civil a colocar
      */
     public void setEstado_civil(String estado_civil) {
-        this.estado_civil = estado_civil;
+        this.estado_civil = estado_civil.toUpperCase();
     }
 
     /**
@@ -131,7 +131,7 @@ public class Worker {
      * @param direccion a colocar
      */
     public void setDireccion(String direccion) {
-        this.direccion = direccion;
+        this.direccion = direccion.toUpperCase();
     }
 
     /**
@@ -147,7 +147,7 @@ public class Worker {
      * @param email a colocar
      */
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toUpperCase();
     }
 
     /**

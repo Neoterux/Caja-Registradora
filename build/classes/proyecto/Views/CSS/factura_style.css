@@ -36,12 +36,10 @@
     -fx-border-color: transparent transparent black transparent;
     -fx-border-style: segments(0, 5, 5, 0) line-cap round;
 }
-.table-row-cell:empty {
-    -fx-background-color: white;
-}
- 
+
 .table-row-cell:empty .table-cell {
     -fx-border-width: 0px;
+    -fx-fixed-cell-size: 0px;
 }
 .table-row-cell{
     -fx-background-color: white;
