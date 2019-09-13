@@ -18,7 +18,7 @@ Archivo zip de scripts de la base de datos: [aqui](https://github.com/Neoterux/C
 4.- Figueroa Silva Alex  
 5.- Ruiz Guerrero Stuart
 
-#Librerias usadas
+#Librerias usadas  
 [Gson](https://github.com/google/gson)  
 [Log4J](https://github.com/apache/log4j)  
 [Zxing](https://github.com/zxing/zxing)
